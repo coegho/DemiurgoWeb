@@ -36,15 +36,6 @@ public class RoomServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.sendRedirect("index");
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
 		String token = (String) request.getSession().getAttribute("token");
 		if (token == null) {
 			response.sendRedirect("cookie");
@@ -54,26 +45,36 @@ public class RoomServlet extends HttpServlet {
 				response.sendRedirect("index");
 			} else {
 				ServerInterface rem = DemiurgoConnector.getInterface();
-				
-				if (path == "noroom") { //No room path provided
-					
+
+				if (path == "noroom") { // No room path provided
+
 					List<Decision> decisions = rem.getNoRoomDecisions(token);
-					
+
 					request.setAttribute("path", "The Void");
 					request.setAttribute("decisions", decisions);
-					
+
 					RequestDispatcher view = request.getRequestDispatcher("jsp/noroom.jsp");
 					view.forward(request, response);
-				} else { //Room path provided
+				} else { // Room path provided
 					WorldRoomData room = rem.checkRoom(token, path);
-					
+
 					request.setAttribute("room", room);
-					
+
 					RequestDispatcher view = request.getRequestDispatcher("jsp/room.jsp");
 					view.forward(request, response);
 				}
 			}
 		}
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }

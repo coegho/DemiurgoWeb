@@ -10,6 +10,7 @@
 <body>
 <h1>DemiurgoWeb</h1>
 <h4>User: ${sessionScope.user.username}</h4>
+<div><a href="seeallrooms">See all rooms</a></div>
 	<form method="get" action="room">
 		<label for='pending'>Pending rooms:</label> <select>
 			<c:forEach var="room" items="${pending}">

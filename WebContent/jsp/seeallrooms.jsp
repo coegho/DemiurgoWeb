@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,15 +9,16 @@
 </head>
 <body>
 	<h1>DemiurgoWeb - Room Panel</h1>
-	<h2>${room.longPath}</h2>
-	<c:forEach var="decision" items="${room.decisions}">
-		<h3>${decision.username}</h3>
-		<p>${decision.text}</p>
+	<c:forEach var="p" items="${paths}">
+		<c:if test="${p.roomFilled}">
+			<p>
+				<a href="room?room=${p.path}">${p.path}</a>
+			</p>
+		</c:if>
+		<c:if test="${!p.roomFilled}">
+			<p>${p.path}</p>
+		</c:if>
 	</c:forEach>
-	<tags:roomobjs />
-	<form method='post' action='processcode'>
-		<textarea rows="20" cols="80" id='code' name='code'></textarea>
-	</form>
 	<a href="index">Return to GM Panel</a>
 </body>
 </html>
