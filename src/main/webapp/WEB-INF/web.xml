@@ -6,10 +6,9 @@
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
-
   <servlet-mapping>
     <servlet-name>demiurgoweb</servlet-name>
-    <url-pattern>*.htm</url-pattern>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index</welcome-file>

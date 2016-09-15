@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="/jsp/include.jsp" %>
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,15 +10,10 @@
 </head>
 <body>
 	<h1>DemiurgoWeb - Room Panel</h1>
-	<c:forEach var="p" items="${paths}">
-		<c:if test="${p.roomFilled}">
-			<p>
-				<a href="room?room=${p.path}">${p.path}</a>
-			</p>
-		</c:if>
-		<c:if test="${!p.roomFilled}">
-			<p>${p.path}</p>
-		</c:if>
+	<h2>${path}</h2>
+	<c:forEach var="decision" items="${room.decisions}">
+		<h3>${decision.username}</h3>
+		<p>${decision.text}</p>
 	</c:forEach>
 	<a href="index">Return to GM Panel</a>
 </body>
