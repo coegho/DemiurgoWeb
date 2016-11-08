@@ -1,13 +1,14 @@
 package es.usc.rai.coego.martin.demiurgo.web.controllers;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+
+import es.usc.rai.coego.martin.demiurgo.json.LoginRequest;
 
 @Controller
 @RequestMapping("/login")
@@ -43,12 +44,22 @@ public class LoginController{
 	@PostMapping("/")
 	public String login(@RequestParam("world") String world, @RequestParam("username") String username, @RequestParam("pass") String pass) {
 		RestTemplate restTemplate = new RestTemplate();
-		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+		
+		/*MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		map.add("name", username);
 		map.add("password", pass);
-		map.add("world", world);
-        String token = restTemplate.postForObject("http://localhost:5324/demiurgo/webservice/login", map, String.class);
+		map.add("world", world);*/
+		LoginRequest lr = new LoginRequest();
+		lr.setName(username);
+		lr.setPassword(pass);
+		lr.setWorld(world);
+		String url = "http://localhost:5324/demiurgo/webservice/login";
+		
+		HttpEntity<LoginRequest> request = new HttpEntity<>(lr);
+		
+		String token = restTemplate.postForObject(url, request, String.class);
         System.out.println("got token " + token);
+		
 		return "login";
 	}
 

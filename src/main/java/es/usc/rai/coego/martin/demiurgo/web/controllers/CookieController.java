@@ -1,12 +1,14 @@
 package es.usc.rai.coego.martin.demiurgo.web.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/cookie")
 public class CookieController {
 
+	@GetMapping("/")
 	public String doSom() {
 		/*String path = "index";
 		if(request.getParameter("path") != null)
@@ -36,6 +38,6 @@ public class CookieController {
 			}
 		}
 		response.sendRedirect("login");*/
-		return "";
+		return "redirect:/login";
 	}
 }
