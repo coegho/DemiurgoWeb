@@ -1,26 +1,49 @@
 package es.usc.rai.coego.martin.demiurgo.web.controllers;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.HttpClientErrorException;
+
+import es.usc.rai.coego.martin.demiurgo.json.GetPendingRoomsResponse;
+import es.usc.rai.coego.martin.demiurgo.web.beans.DemiurgoConnector;
+import es.usc.rai.coego.martin.demiurgo.web.beans.LoggedUser;
 
 @Controller
-@RequestMapping("/gamemaster")
+@RequestMapping("/gm")
 public class GameMasterController {
+	@Autowired
+	LoggedUser user;
+	@Autowired
+	DemiurgoConnector dc;
 
-	public String doSom() {
-		/*String token = (String) request.getSession().getAttribute("token");
-		UserData user = (UserData) request.getSession().getAttribute("user");
-		if (token == null || user == null) {
-			response.sendRedirect("cookie");
-		} else {
-			ServerInterface h = DemiurgoConnector.getInterface();
-			List<String> p = h.getPendingRooms(token); //TODO: decisions without room
-			if(h.getNoRoomDecisions(token).size() > 0)
-				p.add("noroom");
-			request.setAttribute("pending", p);
-			RequestDispatcher view= request.getRequestDispatcher("jsp/gamemaster.jsp");
-			view.forward(request, response);
-		}*/
+	@RequestMapping
+	public String SeePanel(Model model) {
+		if (user.getToken() == null) {
+			return "redirect:/cookie";
+		}
+		try {
+			model.addAttribute("username", user.getName());
+
+			GetPendingRoomsResponse res =  dc.doGet(user.getToken(), "pendingrooms", GetPendingRoomsResponse.class);
+			List<String> pending = res.getPendingRooms();
+			
+			model.addAttribute("pendingtotal", pending.size());
+			if(!pending.isEmpty()) {
+				model.addAttribute("pending", pending);
+			}
+			
+			return "gamemaster";
+		} catch (HttpClientErrorException ex) {
+			System.out.println(ex.getLocalizedMessage()); // TODO
+			if (ex.getStatusCode() == HttpStatus.FORBIDDEN) {
+
+			}
+		}
 		return "gamemaster";
 	}
 }

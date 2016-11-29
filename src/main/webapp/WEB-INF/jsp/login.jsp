@@ -10,8 +10,8 @@
 </head>
 <body>
 	<tags:login />
-	<c:if test="${error}">
-		<p>Login error</p>
+	<c:if test="${error!=null}">
+		<p>${error}</p>
 	</c:if>
 </body>
 </html>
