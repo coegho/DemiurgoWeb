@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DemiurgoWeb - Room Panel</title>
+</head>
+<body>
+	<h1>DemiurgoWeb - Room Panel</h1>
+	<div>
+		<p th:each="path : ${paths}" >
+			<a th:text="${path}" th:href="@{/room(path=${path})}">/region1/city1</a>
+			<a th:remove="all">/region1/city1/inn</a>
+			<a th:remove="all">/region1/road_city1_city2</a>
+		</p>
+	</div>
+
+	<a th:href="@{/index}">Return to GM Panel</a>
+</body>
+</html>
