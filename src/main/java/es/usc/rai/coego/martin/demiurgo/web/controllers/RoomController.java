@@ -1,20 +1,23 @@
 package es.usc.rai.coego.martin.demiurgo.web.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import es.usc.rai.coego.martin.demiurgo.web.beans.DemiurgoConnector;
+import es.usc.rai.coego.martin.demiurgo.web.beans.LoggedUser;
 
 @Controller
-@RequestMapping("/room")
 public class RoomController {
-
-	@RequestMapping
-	public String getNoRoom() {
-		return "room";
-	}
+	@Autowired
+	LoggedUser user;
 	
-	@RequestMapping("{path}")
-	public String getRoom(@PathVariable(value="path")String path) {
+	@Autowired
+	DemiurgoConnector dc;
+	
+	@GetMapping("/room")
+	public String getRoom(@RequestParam(value="path")String path) {
 		/*String token = (String) request.getSession().getAttribute("token");
 		if (token == null) {
 			response.sendRedirect("cookie");

@@ -1,30 +1,39 @@
 package es.usc.rai.coego.martin.demiurgo.web.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import es.usc.rai.coego.martin.demiurgo.json.AllRoomPathsResponse;
 import es.usc.rai.coego.martin.demiurgo.web.beans.DemiurgoConnector;
+import es.usc.rai.coego.martin.demiurgo.web.beans.LoggedUser;
 
 @Controller
 @RequestMapping("/seeallrooms")
 public class AllRoomsController {
 	@Autowired
+	LoggedUser user;
+	
+	@Autowired
 	DemiurgoConnector dc;
+
+	private List<String> roomPaths;
+	
+	@ModelAttribute("paths")
+	List<String> getRoomPaths() {
+		return roomPaths;
+	}
 	
 	@GetMapping
 	public String seeAllRooms() {
-		/*String token = (String) request.getSession().getAttribute("token");
-		UserData user = (UserData) request.getSession().getAttribute("user");
-		if (token == null || user == null) {
-			response.sendRedirect("cookie");
-		} else {
-			RoomPathData p = DemiurgoConnector.getInterface().getAllRoomPaths(token);
-			request.setAttribute("paths", p.iterator());
-			RequestDispatcher view= request.getRequestDispatcher("jsp/seeallrooms.jsp");
-			view.forward(request, response);
-		}*/
+		
+		AllRoomPathsResponse res = dc.doGet(user.getToken(), "roompaths", AllRoomPathsResponse.class);
+		roomPaths = res.getPaths();
+		
 		return "seeallrooms";
 	}
 }
