@@ -22,47 +22,47 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		if (user.getToken() == null) {
-			//Cannot find token in session
-			//searching cookie
+		if (!user.isLogged()) {
+			// Cannot find token in session
+			// searching cookie
 			String cookieToken = null;
 			Cookie[] cookies = request.getCookies();
-		    if (cookies != null) {
-		      for (int i = 0; i < cookies.length; i++) {
-		        if (cookies[i].getName().equals("demiurgo_token")) {
-		          cookieToken = cookies[i].getValue();
-		          break;
-		        }
-		      }
-		      
-		      if(cookieToken != null) { //cookie found
-		    	  if(requestUserData(cookieToken)) {
-		    		  //good token, continue
-		    		  return true;
-		    	  } else { //wrong or out-date token
-		    		  Cookie newCookie = new Cookie("demiurgo_token", "");
-		    		  newCookie.setMaxAge(0);
-		    		  response.addCookie(newCookie); // delete the cookie
-		    	  }
-		      }
-		    }
-		    response.sendRedirect("/login");
-		    return false; //cannot find token anywhere
+			if (cookies != null) {
+				for (int i = 0; i < cookies.length; i++) {
+					if (cookies[i].getName().equals("demiurgo_token")) {
+						cookieToken = cookies[i].getValue();
+						break;
+					}
+				}
+
+				if (cookieToken != null) { // cookie found
+					if (requestUserData(cookieToken)) {
+						// good token, continue
+						return true;
+					} else { // wrong or out-date token
+						Cookie newCookie = new Cookie("demiurgo_token", "");
+						newCookie.setMaxAge(0);
+						response.addCookie(newCookie); // delete the cookie
+					}
+				}
+			}
+			response.sendRedirect("/login");
+			return false; // cannot find token anywhere
 
 		} else {
-			return true; //token found in session
+			return true; // token found in session
 		}
 	}
-	
+
 	private boolean requestUserData(String token) {
 		try {
-		MyUserResponse res = dc.doGet(token, "me", MyUserResponse.class);
-		user.setToken(token);
-		user.setName(res.getUser().getName());
-		user.setRole(user.getRole());
-		user.setWorld(res.getUser().getWorld());
-		return true;
-		} catch(HttpClientErrorException ex) {
+			MyUserResponse res = dc.doGet(token, "me", MyUserResponse.class);
+			user.setToken(token);
+			user.setName(res.getUser().getName());
+			user.setRole(res.getUser().getRole());
+			user.setWorld(res.getWorld());
+			return true;
+		} catch (HttpClientErrorException ex) {
 			return false;
 		}
 	}

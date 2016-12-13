@@ -5,15 +5,33 @@
 </head>
 <body>
 	<h1>DemiurgoWeb - Room Panel</h1>
-	<h2>${room.longPath}</h2>
-	<c:forEach var="decision" items="${room.decisions}">
-		<h3>${decision.username}</h3>
-		<p>${decision.text}</p>
-	</c:forEach>
-	<tags:roomobjs />
-	<form method='post' action='processcode'>
-		<textarea rows="20" cols="80" id='code' name='code'></textarea>
+	<h2 th:text="${room.longPath}">/region1/city1/inn</h2>
+	<h3>Decisions</h3>
+	<div th:each="decision : ${room.decisions}">
+		<h4 th:text="${decision.username}">User1</h4>
+		<p th:text="${decision.text}">Text with a description of the action.</p>
+	</div>
+	<h3>Objects</h3>
+	<div th:each="object : ${room.objects}">
+		<h4 th:text="${object.classname}+'(#'+${object.id}+')'">(Human)#1</h4>
+		<div th:each="var : ${object.fields}">
+			<p th:text="${var.type}+' '+${var.name}+' = '+${var.value}">String name = bob</p>
+		</div>
+	</div>
+	<h3>Variables</h3>
+	<div th:each="var : ${room.variables}">
+		<p th:text="${var.type}+' '+${var.name}+' = '+${var.value}">int health = 15</p>
+
+	</div>
+	<form action="#" method="post" th:action="@{/room}" th:object="${processCodeForm}">
+		<input type="hidden" th:field="*{path}" />
+		<label for="code">Code:</label>
+		<textarea th:field="*{code}" rows="20" cols="80"></textarea>
+		<p th:if="${#fields.hasErrors('code')}" th:errors="*{code}">Code error</p>
+		<p th:text="${parseErrors}"></p>
+		<button type="submit">Process code</button>
 	</form>
-	<a href="index">Return to GM Panel</a>
+	<a th:href="@{/history(path=${room.longPath})}">See room history</a>
+	<a th:href="@{/index}">Return to GM Panel</a>
 </body>
 </html>

@@ -6,17 +6,17 @@
 <body>
 	<h1>DemiurgoWeb</h1>
 	<h4>
-		User: <span th:text="@{username}">(Your name)</span>
+		User: <a th:href="@{/account}" th:text="${username}">(Your name)</a>
 	</h4>
 	<div>
-		<a th:href="@{~/seeallrooms}">See all rooms</a>
+		<a th:href="@{/seeallrooms}">See all rooms</a>
 	</div>
 	<form action="#" method="get" th:action="@{/room}"
 		th:object="${gmPanelForm}">
 		<div th:switch="${not #lists.isEmpty(pendingRooms)}">
 			<div th:case="true">
 				<label for='pending'>Pending rooms:</label> <select
-					th:if="${not #lists.isEmpty(pendingRooms)}" th:field="*{room}">
+					th:if="${not #lists.isEmpty(pendingRooms)}" th:field="*{path}">
 					<option th:each="room : ${pendingRooms}" th:value="${room}"
 						th:text="${room}">The void</option>
 				</select>

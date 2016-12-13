@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DemiurgoWeb - Room Panel</title>
+</head>
+<body>
+	<h1>DemiurgoWeb - Room Panel</h1>
+	<h3>Executed action</h3>
+	<div th:object="${action}">
+		<p th:text="*{room}"></p>
+		<p th:text="*{date}"></p>
+		<h4 th:text="'Output of action #'+*{id}">Output of action #1</h4>
+		<p th:text="*{narration}"></p>
+		<h3>Witnesses</h3>
+		<div th:each="witness : *{witnesses}">
+			<p th:text="${witness}"></p>
+		</div>
+	</div>
+	<form action="#" method="post" th:action="@{/narrate}" th:object="${narrateActionForm}">
+		<input type="hidden" th:field="*{actionId}" />
+		<label for="code">Narration:</label>
+		<textarea th:field="*{narration}" rows="20" cols="80">Narration of events</textarea>
+		<p th:if="${#fields.hasErrors('narration')}" th:errors="*{narration}">Narration error</p>
+		<button type="submit">Send narration</button>
+	</form>
+	<a th:href="@{/index}">Return to GM Panel</a>
+</body>
+</html>

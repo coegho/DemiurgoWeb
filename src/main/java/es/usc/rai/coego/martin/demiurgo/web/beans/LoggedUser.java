@@ -1,11 +1,5 @@
 package es.usc.rai.coego.martin.demiurgo.web.beans;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.stereotype.Component;
-
-@Component
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class LoggedUser {
 	private String token;
 	private String name;
@@ -34,10 +28,17 @@ public class LoggedUser {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	public String getWorld() {
+	public String getWorld()  {
 		return world;
 	}
 	public void setWorld(String world) {
 		this.world = world;
+	}
+
+	public boolean isLogged() {
+		return token != null &
+				name != null &
+				role != null &
+				world != null;
 	}
 }

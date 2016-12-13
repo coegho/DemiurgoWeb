@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonUser {
 	protected String name;
-	protected long objId;
-	protected String world;
+	protected JsonObject obj;
+	protected String decision;
 	protected String role;
 
 	public String getRole() {
@@ -25,20 +25,19 @@ public class JsonUser {
 		this.name = name;
 	}
 
-	public long getObjId() {
-		return objId;
+	public JsonObject getObj() {
+		return obj;
+	}
+	
+	public void setObj(JsonObject obj) {
+		this.obj = obj;
 	}
 
-	public void setObjId(long objId) {
-		this.objId = objId;
+	public String getDecision() {
+		return decision;
 	}
-
-	public String getWorld() {
-		return world;
+	
+	public void setDecision(String decision) {
+		this.decision = decision;
 	}
-
-	public void setWorld(String world) {
-		this.world = world;
-	}
-
 }

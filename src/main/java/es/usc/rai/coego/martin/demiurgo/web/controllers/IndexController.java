@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import es.usc.rai.coego.martin.demiurgo.web.beans.LoggedUser;
 
 @Controller
-@RequestMapping({"/", "/index"})
 public class IndexController {
 	@Autowired
 	LoggedUser user;
 	
-	@RequestMapping
+	@RequestMapping({"/", "/index"})
 	public String redirect() {
 		return "redirect:/" + user.getRole();
 	}

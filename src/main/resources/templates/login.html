@@ -19,5 +19,6 @@
 		<p th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}">Password error</p>
 		</div>
 	</form>
+	<a th:href="@{~/register}">Register</a>
 </body>
 </html>

@@ -1,10 +1,9 @@
 package es.usc.rai.coego.martin.demiurgo.web.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpClientErrorException;
@@ -21,12 +20,6 @@ public class GameMasterController {
 	LoggedUser user;
 	@Autowired
 	DemiurgoConnector dc;
-	private List<String> pendingRooms;
-	
-	@ModelAttribute("pendingRooms")
-	public List<String> getPendingRooms() {
-		return pendingRooms;
-	}
 	
 	@ModelAttribute("username")
 	public String getUsername() {
@@ -34,11 +27,11 @@ public class GameMasterController {
 	}
 
 	@RequestMapping
-	public String SeePanel(GmPanelForm gmPanelForm) {
+	public String SeePanel(GmPanelForm gmPanelForm, Model model) {
 		try {
 
 			GetPendingRoomsResponse res =  dc.doGet(user.getToken(), "pendingrooms", GetPendingRoomsResponse.class);
-			pendingRooms = res.getPendingRooms();
+			model.addAttribute("pendingRooms",res.getPendingRooms());
 			
 		} catch (HttpClientErrorException ex) {
 			System.out.println(ex.getLocalizedMessage()); // TODO

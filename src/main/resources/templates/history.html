@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DemiurgoWeb - Room History</title>
+<link rel="stylesheet" href="testing.css" />
+</head>
+<body>
+	<h1>DemiurgoWeb - Room History</h1>
+	<h2 th:text="${path}">/region1/city1/inn</h2>
+	<div th:each="action : ${actions}">
+		<p th:text="'#' + ${action.id}">#1</p>
+		<p th:text="${action.date}">Date</p>
+		<p th:text="${action.narration}">Narration</p>
+		<div th:if="${not #lists.isEmpty(action.witnesses)}">
+			<h4>Witnesses</h4>
+			<div th:each="w : ${action.witnesses}">
+				<p th:text="${w}">Some guy</p>
+			</div>
+		</div>
+		<a th:href="@{/narrate(id=${action.id})}">Edit</a>
+	</div>
+	<a th:href="@{/room(path=${path})}">Return to Room Panel</a>
+	<a th:href="@{/index}">Return to GM Panel</a>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Demiurgo Web - Register</title>
+</head>
+<body>
+	<form action="#" th:action="@{/register}" th:object="${registerForm}"
+		method="post">
+		<div>
+			<label for="world">World:</label> <select th:field="*{world}">
+				<option th:each="world : ${worlds}" th:value="${world}"
+					th:text="${world}">World1</option>
+			</select>
+		</div>
+		<div>
+			<label for="username">User name:</label> <input type="text"
+				th:field="*{username}" />
+		</div>
+		<div>
+			<label for="mail">Mail address:</label> <input type="email"
+				th:field="*{mail}" />
+		</div>
+		<div>
+			<label for="pass">Password:</label> <input type="password"
+				th:field="*{pass}" />
+		</div>
+		<button type="submit">Register</button>
+		<div>
+			<p th:if="${#fields.hasErrors('world')}" th:errors="*{world}">World
+				error</p>
+			<p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username
+				error</p>
+			<p th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}">Password
+				error</p>
+			<p th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}">Mail
+				error</p>
+				<p th:if="${loginError} != null" th:text="${loginError}">Login error</p>
+		</div>
+	</form>
+</body>
+</html>

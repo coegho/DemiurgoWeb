@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DemiurgoWeb - User Panel</title>
+<link rel="stylesheet" href="testing.css"/>
+</head>
+<body>
+	<h1>DemiurgoWeb - User panel</h1>
+	<h4>
+		User: <a th:href="@{/account}" th:text="${username}">(Your name)</a>
+	</h4>
+	<h2>Recent actions</h2>
+	<div th:each="action : ${actions}">
+		<p th:text="${action}">Narration</p>
+	</div>
+	<div>
+	<div th:if="${current} != null">
+	<p>You have sent your decision and you are waiting for a GM to resolve it.</p>
+	<p>Current decision:</p>
+	<p th:text="${current}">Decision text</p>
+	</div>
+	<form  action="#" method="post" th:action="@{/user}"
+		th:object="${userPanelForm}">
+		<label for="decision">What do you want to do?</label>
+		<textarea th:field="*{decision}" rows="10" cols="40"></textarea>
+		<button type="submit">Send</button>
+	</form>
+	
+	</div>
+	<a th:href="@{~/logout}">Logout</a>
+</body>
+</html>

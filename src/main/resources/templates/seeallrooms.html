@@ -5,11 +5,18 @@
 </head>
 <body>
 	<h1>DemiurgoWeb - Room Panel</h1>
+	<h3>Create new room</h3>
+	<form action="#" method="POST" th:action="@{~/createroom}"
+		th:object="${createRoomForm}">
+		<label for="path">Path:</label>
+		<input type="text" th:field="*{path}"/>
+		<button type="submit">Create</button>
+	</form>
+	<h3>Check room</h3>
 	<div>
-		<p th:each="path : ${paths}" >
+		<p th:each="path : ${paths}">
 			<a th:text="${path}" th:href="@{/room(path=${path})}">/region1/city1</a>
-			<a th:remove="all">/region1/city1/inn</a>
-			<a th:remove="all">/region1/road_city1_city2</a>
+			<a th:remove="all">/region1/city1/inn</a> <a th:remove="all">/region1/road_city1_city2</a>
 		</p>
 	</div>
 
