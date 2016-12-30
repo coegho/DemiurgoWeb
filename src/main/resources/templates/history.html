@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>DemiurgoWeb - Room History</title>
-<link rel="stylesheet" href="testing.css" />
+<title th:text="${path} + ' History - DemiurgoWeb'">Room History - DemiurgoWeb</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-	<h1>DemiurgoWeb - Room History</h1>
-	<h2 th:text="${path}">/region1/city1/inn</h2>
-	<div th:each="action : ${actions}">
-		<p th:text="'#' + ${action.id}">#1</p>
-		<p th:text="${action.date}">Date</p>
-		<p th:text="${action.narration}">Narration</p>
-		<div th:if="${not #lists.isEmpty(action.witnesses)}">
-			<h4>Witnesses</h4>
-			<div th:each="w : ${action.witnesses}">
-				<p th:text="${w}">Some guy</p>
+	<header th:replace="fragments/header :: gm">Header</header>
+	<main>
+		<h1 th:text="${path}">/region1/city1/inn</h1>
+		<a th:href="@{/room(path=${path})}">Go to Room Panel</a>
+		<div id="arrows">
+			<a th:if="${prevpag} != null" th:href="@{~/history(path=${path},first=${prevpag},count=${countpag})}">⇦</a>
+			<a th:if="${postpag} != null" th:href="@{~/history(path=${path},first=${postpag},count=${countpag})}">⇨</a>
+		</div>
+		<div id="actions">
+			<div th:each="action : ${actions}" class="action" th:id="'act'+${action.id}"
+			th:classappend="${actionStat.odd}? 'odd' : 'even'">
+				<p><span class="date" th:text="${action.date}">Date</span>
+				<a th:href="@{/narrate(id=${action.id})}">Edit</a></p>
+				<details class="witnesses" th:if="${not #lists.isEmpty(action.witnesses)}">
+					<summary>Witnesses</summary>
+						<span th:each="w : ${action.witnesses}" th:text="${w}">Some guy</span>
+				</details>
+				<p class="narration" th:utext="${action.narration}">Narration</p>
 			</div>
 		</div>
-		<a th:href="@{/narrate(id=${action.id})}">Edit</a>
-	</div>
-	<a th:href="@{/room(path=${path})}">Return to Room Panel</a>
-	<a th:href="@{/index}">Return to GM Panel</a>
+	</main>
 </body>
 </html>

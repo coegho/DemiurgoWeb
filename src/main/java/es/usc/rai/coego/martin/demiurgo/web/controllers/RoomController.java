@@ -8,18 +8,23 @@ import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import es.usc.rai.coego.martin.demiurgo.json.AllRoomPathsResponse;
 import es.usc.rai.coego.martin.demiurgo.json.CheckRoomResponse;
+import es.usc.rai.coego.martin.demiurgo.json.CreateRoomRequest;
 import es.usc.rai.coego.martin.demiurgo.json.ExecuteCodeRequest;
 import es.usc.rai.coego.martin.demiurgo.json.ExecuteCodeResponse;
 import es.usc.rai.coego.martin.demiurgo.json.JsonAction;
+import es.usc.rai.coego.martin.demiurgo.json.JsonRoom;
 import es.usc.rai.coego.martin.demiurgo.json.NarrateActionRequest;
 import es.usc.rai.coego.martin.demiurgo.json.NarrateActionResponse;
 import es.usc.rai.coego.martin.demiurgo.web.beans.DemiurgoConnector;
 import es.usc.rai.coego.martin.demiurgo.web.beans.LoggedUser;
+import es.usc.rai.coego.martin.demiurgo.web.forms.CreateRoomForm;
 import es.usc.rai.coego.martin.demiurgo.web.forms.NarrateActionForm;
 import es.usc.rai.coego.martin.demiurgo.web.forms.ProcessCodeForm;
 
@@ -30,6 +35,27 @@ public class RoomController {
 
 	@Autowired
 	DemiurgoConnector dc;
+	
+	@ModelAttribute("user")
+	public LoggedUser getUser() {
+		return user;
+	}
+	
+	
+	@GetMapping("/rooms")
+	public String seeAllRooms(CreateRoomForm createRoomForm, Model model) {
+		AllRoomPathsResponse res = dc.doGet(user.getToken(), "roompaths", AllRoomPathsResponse.class);
+		model.addAttribute("paths", res.getPaths());
+		return "seeallrooms";
+	}
+	
+	@PostMapping("createroom")
+	public String createRoom(@Valid CreateRoomForm createRoomForm) {
+		CreateRoomRequest req = new CreateRoomRequest();
+		req.setPath(createRoomForm.getPath());
+		JsonRoom r = dc.doPost(user.getToken(), "createroom", req, CreateRoomRequest.class, JsonRoom.class);
+		return "redirect:/room?path="+r.getLongPath();
+	}
 
 	@GetMapping("/room")
 	public String getNewActionForm(@RequestParam("path") String path, ProcessCodeForm processCodeForm, Model model,
@@ -47,7 +73,7 @@ public class RoomController {
 	}
 
 	@PostMapping(path = "/room")
-	public String executeCode(@Valid ProcessCodeForm processCodeForm, BindingResult br, Model m, RedirectAttributes ra) {
+	public String executeCode(@Valid ProcessCodeForm processCodeForm, BindingResult br, Model m) {
 		
 		if (br.hasErrors()) {
 			m.addAttribute("room", requestRoomData(processCodeForm.getPath()).getRoom());
@@ -57,12 +83,17 @@ public class RoomController {
 		ExecuteCodeRequest req = new ExecuteCodeRequest();
 		req.setPath(processCodeForm.getPath());
 		req.setCode(processCodeForm.getCode());
+		req.setCreateAction(processCodeForm.isCreateAction());
 		ExecuteCodeResponse res = dc.doPost(user.getToken(), "executecode", req, ExecuteCodeRequest.class,
 				ExecuteCodeResponse.class);
 
 		if (res.getStatus().isOk()) {
-			ra.addFlashAttribute("action", res.getAction());
-			return "redirect:/narrate?id=" + res.getAction().getId();
+			if(req.isCreateAction()) {
+				return "redirect:/narrate?id=" + res.getAction().getId();
+			}
+			else {
+				return "redirect:/room?path=" + req.getPath();
+			}
 		} else {
 			// There was errors in code
 			m.addAttribute("parseErrors", res.getStatus().getDescription());
@@ -74,14 +105,15 @@ public class RoomController {
 	
 	@GetMapping("/narrate")
 	public String getNarrationForm(@RequestParam("id") String id, NarrateActionForm narrateActionForm, Model model) {
-		if (!model.containsAttribute("action")) { // Flash attribute
-			LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-			params.add("id", id);
-			JsonAction a = dc.doGet(user.getToken(), "action", params, JsonAction.class);
-			model.addAttribute("action", a);
-			narrateActionForm.setNarration(a.getNarration());
-		}
-		narrateActionForm.setActionId(Long.valueOf(id));
+		LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("id", id);
+		JsonAction a = dc.doGet(user.getToken(), "action", params, JsonAction.class);
+		model.addAttribute("action", a);
+		
+		model.addAttribute("room", requestRoomData(a.getRoom()).getRoom());
+		
+		narrateActionForm.setNarration(a.getNarration());
+		narrateActionForm.setActionId(Long.parseLong(id));
 		return "narrate";
 	}
 
@@ -101,7 +133,7 @@ public class RoomController {
 		NarrateActionResponse res = dc.doPost(user.getToken(), "narrateaction", req, NarrateActionRequest.class,
 				NarrateActionResponse.class);
 
-		return "redirect:/history?path="+res.getAction().getRoom();
+		return "redirect:/history?path="+res.getAction().getRoom() + "#act" + res.getAction().getId();
 	}
 
 	private CheckRoomResponse requestRoomData(String path) {

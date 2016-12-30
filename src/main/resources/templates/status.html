@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title th:text="'Status - DemiurgoWeb'">Status - DemiurgoWeb</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<header th:replace="fragments/header :: user">Header</header>
+	<main>
+		<h1 th:text="Status">Status</h1>
+		<div id="status">
+			<div class="data_container">
+				<div id="selected_obj" class="float">
+					<p>INT ataque = '15'</p>
+					<p>STRING nome = 'guerreiro'</p>
+					<p>INT vida = '15'</p>
+				</div>
+				<div class="float" id="obj_img">
+					<img th:if="${img_url} != null" th:src="${img_url}" />
+				</div>
+				<div style="clear: both;"></div>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

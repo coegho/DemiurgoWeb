@@ -1,37 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>DemiurgoWeb - Room Panel</title>
+<meta charset="utf-8" />
+<title th:text="${room.longPath} + ' - DemiurgoWeb'">Room Panel - DemiurgoWeb</title>
+<link rel="stylesheet" href="style.css" />
+<script src="jquery-3.1.1.min.js"></script>
+<script src="jquery-ui.min.js"></script>
+<script src="roomfunctions.js"></script>
+<script th:inline="javascript">
+var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj':{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0},'role':'user'}],'id':0,'longPath':'/region1/city1/inn','objects':[{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0, 'methods':[{'args':['friend'],'name':'greet','returnArg':'result'}]}],'variables':[{'name':'bob','type':'OBJECT/character','value':'#0'}]};
+</script>
 </head>
 <body>
-	<h1>DemiurgoWeb - Room Panel</h1>
-	<h2 th:text="${room.longPath}">/region1/city1/inn</h2>
-	<h3>Decisions</h3>
-	<div th:each="decision : ${room.decisions}">
-		<h4 th:text="${decision.username}">User1</h4>
-		<p th:text="${decision.text}">Text with a description of the action.</p>
-	</div>
-	<h3>Objects</h3>
-	<div th:each="object : ${room.objects}">
-		<h4 th:text="${object.classname}+'(#'+${object.id}+')'">(Human)#1</h4>
-		<div th:each="var : ${object.fields}">
-			<p th:text="${var.type}+' '+${var.name}+' = '+${var.value}">String name = bob</p>
-		</div>
-	</div>
-	<h3>Variables</h3>
-	<div th:each="var : ${room.variables}">
-		<p th:text="${var.type}+' '+${var.name}+' = '+${var.value}">int health = 15</p>
-
-	</div>
-	<form action="#" method="post" th:action="@{/room}" th:object="${processCodeForm}">
-		<input type="hidden" th:field="*{path}" />
-		<label for="code">Code:</label>
-		<textarea th:field="*{code}" rows="20" cols="80"></textarea>
-		<p th:if="${#fields.hasErrors('code')}" th:errors="*{code}">Code error</p>
-		<p th:text="${parseErrors}"></p>
-		<button type="submit">Process code</button>
-	</form>
+	<header th:replace="fragments/header :: gm">Header</header>
+	<main>
+	<h1 th:text="${room.longPath}">/region1/city1/inn</h1>
 	<a th:href="@{/history(path=${room.longPath})}">See room history</a>
-	<a th:href="@{/index}">Return to GM Panel</a>
+	<h2>Decisions</h2>
+	<div th:each="user : ${room.users}">
+		<h4 th:text="${user.name} + ' -> #' + ${user.obj.id}">User1 -> #0</h4>
+		<p class="decision" th:if="${user.decision}!=null" th:text="${user.decision}">Text with a description of the
+			action.</p>
+	</div>
+
+	<div class="float" id="objpanel">
+		<h2>Objects</h2>
+		<div id="objects" class="data_select"></div>
+		<div style="clear:both;"></div>
+		<div class="data_container">
+			<div id="selected_obj" class="float">No object
+				selected</div>
+			<div class="float" id="obj_img"></div>
+			<div style="clear: both;"></div>
+		</div>
+		<div id="fields" class="varpanel"></div>
+		<div style="clear: both;"></div>
+		<div id="methods" class="varpanel"></div>
+	</div>
+
+		<div class="float" id="right_panel">
+			<h2>Variables</h2>
+			<div id="variables" class="varpanel"></div>
+			<div style="clear: both;"></div>
+
+			<form action="#" method="post" th:action="@{/room}"
+				th:object="${processCodeForm}">
+				<input type="hidden" th:field="*{path}" /> <label for="code">Submit Code</label>
+				<textarea th:field="*{code}" rows="20" cols="80"></textarea>
+				<p th:if="${#fields.hasErrors('code')}" th:errors="*{code}">Code
+					error</p>
+				<p th:if="${parseErrors} != null" th:text="${parseErrors}"></p>
+				<div>
+					<button type="submit">Process code</button>
+					<button disabled="true">Check code</button>
+					<label for="createAction" class="newaction">Process and create action</label>
+					<input type="checkbox" th:field="*{createAction}" />
+				</div>
+			</form>
+		</div>
+		<div style="clear: both;"></div>
+	</main>
 </body>
 </html>

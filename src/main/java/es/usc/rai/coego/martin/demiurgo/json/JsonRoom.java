@@ -10,7 +10,7 @@ public class JsonRoom {
 	private String longPath;
 	private List<JsonVariable> variables;
 	private List<JsonObject> objects;
-	private List<JsonDecision> decisions;
+	private List<JsonUser> users;
 
 	public long getId() {
 		return id;
@@ -44,11 +44,11 @@ public class JsonRoom {
 		this.objects = objects;
 	}
 
-	public List<JsonDecision> getDecisions() {
-		return decisions;
+	public List<JsonUser> getUsers() {
+		return users;
 	}
-
-	public void setDecisions(List<JsonDecision> decisions) {
-		this.decisions = decisions;
+	
+	public void setUsers(List<JsonUser> users) {
+		this.users = users;
 	}
 }

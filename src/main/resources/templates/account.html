@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>DemiurgoWeb - Account</title>
-<link rel="stylesheet" href="testing.css" />
+<title th:text="${user.name} + ' - Account'">DemiurgoWeb - Account</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-	<h1>DemiurgoWeb - Account</h1>
-	<p>
-		User:
-		<th:block th:text="${user.name}">(Your name)</th:block>
-	</p>
-	<p>
-		World:
-		<th:block th:text="${user.world}">(World)</th:block>
-	</p>
-	<p>
-		Role:
-		<th:block th:text="${user.role}">(Role)</th:block>
-	</p>
-
-	<a th:href="@{/index}">Return to Panel</a>
-	<a th:href="@{~/logout}">Logout</a>
+	<header th:replace="fragments/header :: ${user.role}">Header</header>
+	<main>
+		<h1>Account</h1>
+		<p>
+			User:
+			<th:block th:text="${user.name}">(Your name)</th:block>
+		</p>
+		<p>
+			World:
+			<th:block th:text="${user.world}">(World)</th:block>
+		</p>
+		<p>
+			Role:
+			<th:block th:text="${user.role}">(Role)</th:block>
+		</p>
+	</main>
 </body>
 </html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DemiurgoWeb - Class Panel</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<header th:replace="fragments/header :: gm">Header</header>
+	<main>
+		<h1>DemiurgoWeb - Class Panel</h1>
+		<h3>Check class</h3>
+		<div>
+			<p th:each="cl : ${classes}">
+				<a th:text="${cl.className}"
+					th:href="@{/class(name=${cl.className})}">character</a>
+			</p>
+			<p th:remove="all">
+				<a>building</a>
+			</p>
+			<p th:remove="all">
+				<a>furniture</a>
+			</p>
+		</div>
+	
+		<h3>Create new class</h3>
+		<form action="#" method="POST" th:action="@{~/classes}"
+			th:object="${createClassForm}">
+			<label for="className">Class Name:</label> <input type="text"
+				th:field="*{className}" /> <label for="code">Code:</label>
+			<textarea th:field="*{code}" rows="20" cols="50"></textarea>
+			<button type="submit">Create</button>
+			<p th:if="${#fields.hasErrors('className')}" th:errors="*{className}">Class
+				Name error</p>
+			<p th:if="${parseErrors != null}" th:text="${parseErrors}"></p>
+		</form>
+	</main>
+</body>
+</html>

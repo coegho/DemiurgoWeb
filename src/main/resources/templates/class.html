@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title th:text="${cl.className + ' - DemiurgoWeb'}">Class Panel - DemiurgoWeb</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<header th:replace="fragments/header :: gm">Header</header>
+	<main>
+		<h1 th:text="'Class: ' + ${cl.className}">Class: character</h1>
+		<h4 th:text="'Inherits from ' + ${cl.parent.className}">Inherits from object</h4>
+		<h3>Methods:</h3>
+		<p th:each="m : ${cl.methods}" th:text="${m}"></p>
+		<h3>Modify code:</h3>
+		<form action="#" method="POST" th:action="@{~/modifyclass}"
+			th:object="${createClassForm}">
+			<input type="hidden"
+				th:field="*{className}" />
+				<label for="code">Code:</label>
+				<textarea th:field="*{code}" rows="20" cols="50"></textarea>
+				<p th:if="${parseErrors} != null" th:text="${parseErrors}"></p>
+			<div><button type="submit">Modify</button></div>
+		</form>
+	</main>
+</body>
+</html>

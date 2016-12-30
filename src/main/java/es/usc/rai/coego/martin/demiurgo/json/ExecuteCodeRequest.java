@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class ExecuteCodeRequest {
 	private String path;
 	private String code;
+	private boolean createAction;
 	
 	public String getPath() {
 		return path;
@@ -21,5 +22,13 @@ public class ExecuteCodeRequest {
 	
 	public void setCode(String code) {
 		this.code = code;
+	}
+	
+	public boolean isCreateAction() {
+		return createAction;
+	}
+	
+	public void setCreateAction(boolean createAction) {
+		this.createAction = createAction;
 	}
 }

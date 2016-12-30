@@ -2,23 +2,29 @@
 <html>
 <head>
 <title>Demiurgo Web - Login</title>
+<link rel="stylesheet" href="style_login.css" />
 </head>
 <body>
-	<form action="#" th:action="@{/login}" th:object="${loginForm}"
-		method="post">
-		<label for="world">World:</label>
-		<input type="text" th:field="*{world}" />
-		<label for="username">User name:</label>
-		<input type="text" th:field="*{username}" />
-		<label for="pass">Password:</label>
-		<input type="password" th:field="*{pass}" />
-		<button type="submit">Login</button>
-		<div>
-		<p th:if="${#fields.hasErrors('world')}" th:errors="*{world}">World error</p>
-		<p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</p>
-		<p th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}">Password error</p>
-		</div>
-	</form>
-	<a th:href="@{~/register}">Register</a>
+	<main>
+		<form action="#" th:action="@{/login}" th:object="${loginForm}"
+			method="post">
+			<label for="world">World:</label>
+			<input type="text" th:field="*{world}" />
+			<label for="username">User name:</label>
+			<input type="text" th:field="*{username}" />
+			<label for="pass">Password:</label>
+			<input type="password" th:field="*{pass}" />
+			<div>
+				<button type="submit">Login</button>
+				<a th:href="@{~/register}">or Register</a>
+			</div>
+			<div>
+			<p th:if="${#fields.hasErrors('world')}" th:errors="*{world}">World error</p>
+			<p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</p>
+			<p th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}">Password error</p>
+			</div>
+		</form>
+	</main>
+	
 </body>
 </html>

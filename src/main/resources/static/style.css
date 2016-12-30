@@ -1,0 +1,325 @@
+header {
+	background-color: #8f5902;
+	border: groove black 4px;
+}
+
+header li {
+	display: inline;
+	margin-right: 35px;
+}
+
+header a:LINK, header a:VISITED {
+	text-decoration: none;
+	color: #2e3436;
+	font-weight: bold;
+}
+
+header a:HOVER {
+	color: #555753;
+}
+
+body {
+	background-color: #e9b96e;
+	margin: 0px;
+	font-family: Carlito, arial, sans;
+}
+
+main {
+	margin: 25px;
+	color: #2e3436;
+}
+
+/* GM PANEL */
+select {
+	width: 340px;
+	/*background-color: #d3d7cf;*/
+	color: #1f035b;
+	font-weight: bold;
+	margin: 5px 0px;
+}
+
+/* ROOM */
+
+#variables {
+	width: 100%;
+	min-width: 500px;
+}
+
+.varpanel div.var {
+	border-radius: 25px;
+	background-color: #362307;
+	padding: 5px 10px;
+	min-width: 75px;
+	color: #d3d7cf;
+	font-weight: bold;
+	float:left;
+	text-align: center;
+	margin: 2px 15px 2px 2px;
+}
+
+.varpanel div.var.selected {
+	border: solid white 2px;
+	margin: 0px 13px 0px 0px;
+	color: white;
+}
+
+
+.varpanel span.varname {
+	display: inline;
+}
+
+.varpanel div.var:HOVER span.varname, .varpanel div.var.selected span.varname {
+	display: none;
+}
+
+.varpanel span.varval, .varpanel span.prev {
+	display: none;
+}
+
+.varpanel div.var:HOVER span.prev {
+	display:inline;
+}
+
+.varpanel div.var.selected span.prev {
+	display:none;
+}
+
+.varpanel div.var.selected span.varval {
+	display: inline;
+}
+
+.varpanel div.objvar {
+	background-color: #0e1027;
+}
+
+div#objpanel {
+	margin-right:50px;
+	width: 500px;
+}
+
+#obj_img {
+	width:30%;
+}
+
+#obj_img img {
+	width: 80%;
+	margin: 10px;
+	max-width: 200px;
+	border: solid #2e3436 3px;
+}
+
+div.data_container {
+	background-color: #af7822;
+	color: black;
+	margin: 0 10px 0 0;
+	min-height: 150px;
+	max-height: 240px;
+	border: solid black 2px;
+	width: 500px;
+}
+
+
+.varpanel .method {
+	border-radius: 10px;
+	background-color: #180625;
+	padding: 5px 10px;
+	min-width: 250px;
+	color: #d3d7cf;
+	text-align: left;
+	margin: 2px 15px 2px 2px;
+	display: table;
+}
+
+.varpanel .mname {
+	font-weight: bold;
+}
+
+.method .margs {
+	display: none;
+}
+
+.method:HOVER .margs {
+	display: inline;
+}
+
+.varpanel .margs {
+	font-style: italic;
+}
+
+.dropvalue {
+	display: none;
+}
+
+#selected_obj {
+	width:70%;
+}
+
+div.data_container h1 {
+	margin: 0;
+	font-size: 14pt;
+}
+
+div.data_container p {
+	margin: 5px;
+}
+
+div.data_select {
+	width: 100%;
+}
+
+.obj {
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+	padding: 5px;
+	margin: 5px 10px 5px 5px;
+	border: solid #2e3436 2px;
+	background-color: #9c6e32;
+	float: left;
+}
+
+.obj.selected {
+	background-color: #ddbd92;
+}
+
+#right_panel {
+	width: 600px;
+}
+
+#code {
+	max-width: 500px;
+	height: 240px;
+	color: #171300;
+	font-weight: bold;
+	font-size: 13pt;
+	font-family: monospace;
+	background-color: #d3d7cf;
+	border: groove gray 5px;
+}
+
+#narration {
+	max-width: 600px;
+	min-width: 400px;
+	height: 240px;
+	color: #2c0303;
+	font-weight: bold;
+	font-size: 11pt;
+	font-family: monospace;
+	background-color: #7c9d3e;
+	border: groove #443908 5px;
+}
+
+label {
+	display: block;
+	font-family: fantasy;
+	font-size: 14pt;
+	margin-top:10px;
+}
+
+.float {
+	float: left;
+}
+
+h2 {
+	margin: 10px 0px 5px;
+}
+
+.decision {
+	font-style: italic;
+}
+
+/* HISTORY */
+
+#actions {
+	border: solid black 5px;
+}
+
+.action {
+	border: groove black 3px;
+	
+}
+
+.even {
+	background-color: #b1894b;
+}
+
+.odd {
+	background-color: #cfa460;
+}
+
+.narration {
+	font-size: 13pt;
+	color: black;
+	margin: 15px 10px;
+}
+
+.date {
+	font-size: 10pt;
+	font-style: italic;
+	color: #2e3436;
+}
+
+details.witnesses {
+	font-size: 11pt;
+}
+
+summary {
+	font-weight: bold;
+	font-style: italic;
+}
+
+.prenarration {
+	font-size: 12pt;
+	color: #2e3436;
+	background-color: #b98e4b;
+	border-radius: 20px;
+	padding: 20px;
+	margin: 5px 0px;
+}
+
+details.roomstatus summary {
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+button {
+	background-color: #2e3436;
+	color: white;
+	border: solid #babdb6 2px;
+}
+
+button:disabled {
+	color: gray;
+}
+
+label.newaction {
+	background-color: #720d0d;
+	font-weight: bold;
+	font-size: 11pt;
+	color: white;
+	font-family: sans;
+	display: inline;
+	margin-left: 100px;
+}
+
+label.newaction + input {
+	transform: scale(1.5);
+}
+
+/* USER */
+.decision {
+	font-style: italic;
+}
+
+textarea#decision {
+	width:100%;
+	height:150px;
+}
+
+.ui-draggable-handle {
+	cursor: grab;
+}
+
+.ui-draggable-dragging {
+	cursor: grabbing;
+}

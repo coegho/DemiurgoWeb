@@ -1,28 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>DemiurgoWeb - Room Panel</title>
+<title th:text="'Action #' + ${action.id}">Action #1 - DemiurgoWeb</title>
+<link rel="stylesheet" href="style.css" />
+<script src="jquery-3.1.1.min.js"></script>
+<script src="jquery-ui.min.js"></script>
+<script src="roomfunctions.js"></script>
+<script th:inline="javascript">
+var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj':{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0},'role':'user'}],'id':0,'longPath':'/region1/city1/inn','objects':[{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0}],'variables':[{'name':'bob','type':'OBJECT/character','value':'#0'}]};
+</script>
 </head>
 <body>
-	<h1>DemiurgoWeb - Room Panel</h1>
-	<h3>Executed action</h3>
-	<div th:object="${action}">
-		<p th:text="*{room}"></p>
-		<p th:text="*{date}"></p>
-		<h4 th:text="'Output of action #'+*{id}">Output of action #1</h4>
-		<p th:text="*{narration}"></p>
-		<h3>Witnesses</h3>
-		<div th:each="witness : *{witnesses}">
-			<p th:text="${witness}"></p>
+	<header th:replace="fragments/header :: gm">Header</header>
+	<main>
+		<h1 th:text="'Action #' + ${action.id} + ' on ' + ${action.room}">Action # on /region1/city1/inn</h1>
+		<a th:if="${action.published}" href="#"
+		   th:href="@{'/history#act' + ${action.id}(path=${action.room})}">Return to History</a>
+		<div>
+		<details class="roomstatus">
+			<summary>See Room Status</summary>
+			<h2>Variables</h2>
+			<div id="variables" class="varpanel"></div>
+			<div style="clear: both;"></div>
+			<h2>Objects</h2>
+			<div id="objects" class="data_select"></div>
+			<div style="clear:both;"></div>
+			<div class="data_container">
+				<div id="selected_obj" class="float">No object
+					selected</div>
+				<div class="float" id="obj_img"></div>
+				<div style="clear: both;"></div>
+			</div>
+			<div id="fields" class="varpanel"></div>
+			<div style="clear: both;"></div>
+		</details>
+		
+			<p th:text="${action.date}" class="date"></p>
+			<h2>Narration</h2>
+			<div class="prenarration">
+				<pre th:text="${action.narration}"></pre>
+			</div>
+			<details class="witnesses" th:if="${not #lists.isEmpty(action.witnesses)}">
+				<summary>Witnesses</summary>
+					<span th:each="w : ${action.witnesses}" th:text="${w}">Some guy</span>
+			</details>
 		</div>
-	</div>
-	<form action="#" method="post" th:action="@{/narrate}" th:object="${narrateActionForm}">
-		<input type="hidden" th:field="*{actionId}" />
-		<label for="code">Narration:</label>
-		<textarea th:field="*{narration}" rows="20" cols="80">Narration of events</textarea>
-		<p th:if="${#fields.hasErrors('narration')}" th:errors="*{narration}">Narration error</p>
-		<button type="submit">Send narration</button>
-	</form>
-	<a th:href="@{/index}">Return to GM Panel</a>
+		
+		
+		
+		<form action="#" method="post" th:action="@{/narrate}" th:object="${narrateActionForm}">
+			<input type="hidden" th:field="*{actionId}" />
+			<label for="narration">Set Narration:</label>
+			<textarea th:field="*{narration}" rows="20" cols="80">Narration of events</textarea>
+			<p th:if="${#fields.hasErrors('narration')}" th:errors="*{narration}">Narration error</p>
+			<div><button type="submit">Send narration</button></div>
+		</form>
+	</main>
 </body>
 </html>

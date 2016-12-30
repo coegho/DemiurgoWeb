@@ -11,6 +11,9 @@ public class ProcessCodeForm {
 	private String path;
 	
 	@NotNull
+	private boolean createAction;
+	
+	@NotNull
 	private String code;
 	
 	public String getPath() {
@@ -27,5 +30,13 @@ public class ProcessCodeForm {
 	
 	public void setCode(String code) {
 		this.code = code;
+	}
+	
+	public boolean isCreateAction() {
+		return createAction;
+	}
+	
+	public void setCreateAction(boolean createAction) {
+		this.createAction = createAction;
 	}
 }

@@ -10,16 +10,18 @@ public class JsonObject {
 	private String classname;
 	private long locationId;
 	private List<JsonVariable> fields;
+	private List<JsonMethod> methods;
 
 	public JsonObject() {
 	}
 
-	public JsonObject(long id, String classname, long locationId, List<JsonVariable> fields) {
+	public JsonObject(long id, String classname, long locationId, List<JsonVariable> fields, List<JsonMethod> methods) {
 		super();
 		this.id = id;
 		this.classname = classname;
 		this.locationId = locationId;
 		this.fields = fields;
+		this.methods = methods;
 	}
 
 	public long getId() {
@@ -52,5 +54,13 @@ public class JsonObject {
 
 	public void setFields(List<JsonVariable> fields) {
 		this.fields = fields;
+	}
+	
+	public List<JsonMethod> getMethods() {
+		return methods;
+	}
+	
+	public void setMethods(List<JsonMethod> methods) {
+		this.methods = methods;
 	}
 }
