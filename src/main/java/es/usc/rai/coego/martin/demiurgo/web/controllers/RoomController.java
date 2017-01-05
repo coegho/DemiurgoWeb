@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import es.usc.rai.coego.martin.demiurgo.json.AllRoomPathsResponse;
 import es.usc.rai.coego.martin.demiurgo.json.CheckRoomResponse;
 import es.usc.rai.coego.martin.demiurgo.json.CreateRoomRequest;
+import es.usc.rai.coego.martin.demiurgo.json.DeleteVariableRequest;
+import es.usc.rai.coego.martin.demiurgo.json.DeleteVariableResponse;
 import es.usc.rai.coego.martin.demiurgo.json.ExecuteCodeRequest;
 import es.usc.rai.coego.martin.demiurgo.json.ExecuteCodeResponse;
 import es.usc.rai.coego.martin.demiurgo.json.JsonAction;
@@ -68,6 +70,8 @@ public class RoomController {
 			return "redirect:/narrate?id="+res.getUnpublishedAction().getId();
 		}
 		// There are no actions
+		AllRoomPathsResponse res2 = dc.doGet(user.getToken(), "roompaths", AllRoomPathsResponse.class);
+		model.addAttribute("paths", res2.getPaths());
 		processCodeForm.setPath(path);
 		return "room";
 	}
@@ -134,6 +138,15 @@ public class RoomController {
 				NarrateActionResponse.class);
 
 		return "redirect:/history?path="+res.getAction().getRoom() + "#act" + res.getAction().getId();
+	}
+	
+	@GetMapping("delvar")
+	public String deleteVariable(@RequestParam("path") String path, @RequestParam("var") String var) {
+		DeleteVariableRequest req = new DeleteVariableRequest();
+		req.setPath(path);
+		req.setVarName(var);
+		dc.doPost(user.getToken(), "delvar", req, DeleteVariableRequest.class, DeleteVariableResponse.class);
+		return "redirect:/room?path="+path;
 	}
 
 	private CheckRoomResponse requestRoomData(String path) {

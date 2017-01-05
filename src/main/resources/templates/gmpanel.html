@@ -2,28 +2,29 @@
 <html>
 <head>
 <meta charset="utf-8" /> 
-<title>DemiurgoWeb - GM Panel</title>
+<title>GM Panel - DemiurgoWeb</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 	<header th:replace="fragments/header :: gm">Header</header>
 	<main>
-		<form action="#" method="get" th:action="@{/room}"
-			th:object="${gmPanelForm}">
-			<div th:switch="${not #lists.isEmpty(pendingRooms)}">
-				<div th:case="true">
-					<label for='pending'>Pending rooms:</label>
-					<select th:if="${not #lists.isEmpty(pendingRooms)}" th:field="*{path}">
-						<option th:each="room : ${pendingRooms}" th:value="${room}"
-							th:text="${room}">The void</option>
-					</select>
-					<div>
-						<button type="submit">Check room</button>
-					</div>
-				</div>
-				<div th:case="false">There are no pending rooms.</div>
+		<h1>World Status</h1>
+		<p th:text="${numUsers} + ' players in this world'">6 players in this world</p>
+		<div th:if="${!#lists.isEmpty(noObjUsers)}">
+			<p>These users don't have any object assigned:</p>
+			<p th:each="u : ${noObjUsers}" th:text="${u}"></p>
+		</div>
+		<h2>Pending rooms</h2>
+		<div class="pendingrooms">
+			<div th:each="room : ${pendingRooms}">
+				<h3 th:text="${room.path}">/region1/city1/inn</h3>
+				<p th:text="${room.numObjects} + ' objects'">5 objects</p>
+				<p th:text="${#lists.size(room.decidingUsers)} + ' of ' + ${room.numUsers} + ' users trying to act:'">1 of 2 users trying to act:</p>
+				<ul class="decidingusers"><li th:each="u : ${room.decidingUsers}" th:text="${u}"></li></ul>
+				<p><a th:href="@{/room(path=${room.path})}">Go to room</a></p>
 			</div>
-		</form>
+			<p th:if="${#lists.isEmpty(pendingRooms)}">There are no pending rooms.</p>
+		</div>
 	</main>
 </body>
 </html>

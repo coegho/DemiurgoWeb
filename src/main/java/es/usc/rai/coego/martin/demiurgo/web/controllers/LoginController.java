@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.HttpClientErrorException;
 
 import es.usc.rai.coego.martin.demiurgo.json.MyUserResponse;
+import es.usc.rai.coego.martin.demiurgo.json.WorldListResponse;
 import es.usc.rai.coego.martin.demiurgo.web.beans.DemiurgoConnector;
 import es.usc.rai.coego.martin.demiurgo.web.beans.LoggedUser;
 import es.usc.rai.coego.martin.demiurgo.web.forms.LoginForm;
@@ -29,13 +31,12 @@ public class LoginController {
 
 	@GetMapping("/login")
 	public String showForm(@CookieValue(value = "demiurgo_token", required = false) String cookieToken,
-			LoginForm form) {
-		if (user.getToken() != null) {
+			LoginForm form, Model model) {
+		if (user.getToken() != null || cookieToken != null) {
 			return "redirect:/index";
 		}
-		if (cookieToken != null) {
-			return "redirect:/cookie";
-		}
+		WorldListResponse res = dc.doGet(null, "worlds", WorldListResponse.class);
+		model.addAttribute("worlds", res.getWorlds());
 		return "login";
 	}
 

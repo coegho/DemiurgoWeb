@@ -6,14 +6,14 @@ public class JsonAction {
 	private long id;
 	private String narration;
 	private String room;
-	private List<String> witnesses;
+	private List<JsonWitness> witnesses;
 	private String date;
 	private boolean published;
 	
 	public JsonAction() {
 	}
 	
-	public JsonAction(long id, String narration, String room, List<String> witnesses, String date, boolean published) {
+	public JsonAction(long id, String narration, String room, List<JsonWitness> witnesses, String date, boolean published) {
 		super();
 		this.id = id;
 		this.narration = narration;
@@ -47,11 +47,11 @@ public class JsonAction {
 		this.room = room;
 	}
 
-	public List<String> getWitnesses() {
+	public List<JsonWitness> getWitnesses() {
 		return witnesses;
 	}
 
-	public void setWitnesses(List<String> witnesses) {
+	public void setWitnesses(List<JsonWitness> witnesses) {
 		this.witnesses = witnesses;
 	}
 	

@@ -8,15 +8,17 @@
 	<main>
 		<form action="#" th:action="@{/login}" th:object="${loginForm}"
 			method="post">
-			<label for="world">World:</label>
-			<input type="text" th:field="*{world}" />
+			<label for="world">World:</label> <select th:field="*{world}">
+					<option th:each="world : ${worlds}" th:value="${world}"
+						th:text="${world}">World1</option>
+				</select>
 			<label for="username">User name:</label>
 			<input type="text" th:field="*{username}" />
 			<label for="pass">Password:</label>
 			<input type="password" th:field="*{pass}" />
 			<div>
 				<button type="submit">Login</button>
-				<a th:href="@{~/register}">or Register</a>
+				<a th:href="@{/register}">or Register</a>
 			</div>
 			<div>
 			<p th:if="${#fields.hasErrors('world')}" th:errors="*{world}">World error</p>

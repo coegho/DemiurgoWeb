@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import es.usc.rai.coego.martin.demiurgo.json.GetPendingRoomsResponse;
 import es.usc.rai.coego.martin.demiurgo.web.beans.DemiurgoConnector;
 import es.usc.rai.coego.martin.demiurgo.web.beans.LoggedUser;
-import es.usc.rai.coego.martin.demiurgo.web.forms.GmPanelForm;
 
 @Controller
 @RequestMapping("/gm")
@@ -25,10 +24,12 @@ public class GameMasterController {
 	}
 
 	@RequestMapping
-	public String SeePanel(GmPanelForm gmPanelForm, Model model) {
+	public String SeePanel(Model model) {
 		GetPendingRoomsResponse res =  dc.doGet(user.getToken(), "pendingrooms", GetPendingRoomsResponse.class);
-		model.addAttribute("pendingRooms",res.getPendingRooms());	
-
+		model.addAttribute("pendingRooms",res.getPendingRooms());
+		model.addAttribute("numUsers", res.getNumUsers());
+		model.addAttribute("noObjUsers", res.getNoObjUsers());
+		
 		return "gmpanel";
 	}
 }

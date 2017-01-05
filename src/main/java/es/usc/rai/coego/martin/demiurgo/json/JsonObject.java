@@ -11,17 +11,19 @@ public class JsonObject {
 	private long locationId;
 	private List<JsonVariable> fields;
 	private List<JsonMethod> methods;
+	private List<JsonInventory> inventories;
 
-	public JsonObject() {
-	}
-
-	public JsonObject(long id, String classname, long locationId, List<JsonVariable> fields, List<JsonMethod> methods) {
+	protected JsonObject() {}
+	
+	public JsonObject(long id, String classname, long locationId, List<JsonVariable> fields, List<JsonMethod> methods,
+			List<JsonInventory> inventories) {
 		super();
 		this.id = id;
 		this.classname = classname;
 		this.locationId = locationId;
 		this.fields = fields;
 		this.methods = methods;
+		this.inventories = inventories;
 	}
 
 	public long getId() {
@@ -55,12 +57,20 @@ public class JsonObject {
 	public void setFields(List<JsonVariable> fields) {
 		this.fields = fields;
 	}
-	
+
 	public List<JsonMethod> getMethods() {
 		return methods;
 	}
-	
+
 	public void setMethods(List<JsonMethod> methods) {
 		this.methods = methods;
+	}
+	
+	public List<JsonInventory> getInventories() {
+		return inventories;
+	}
+	
+	public void setInventories(List<JsonInventory> inventories) {
+		this.inventories = inventories;
 	}
 }

@@ -7,16 +7,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GetPendingRoomsResponse {
 	private ResponseStatus status;
-	private List<String> pendingRooms;
+	private List<JsonPendingRoom> pendingRooms;
+	private int numUsers;
+	private List<String> noObjUsers;
 
 	public GetPendingRoomsResponse() {
-
 	}
 
-	public GetPendingRoomsResponse(ResponseStatus status, List<String> pendingRooms) {
+	public GetPendingRoomsResponse(ResponseStatus status, List<JsonPendingRoom> pendingRooms, int numUsers,
+			List<String> noObjUsers) {
 		super();
 		this.status = status;
 		this.pendingRooms = pendingRooms;
+		this.numUsers = numUsers;
+		this.noObjUsers = noObjUsers;
 	}
 
 	public ResponseStatus getStatus() {
@@ -27,12 +31,28 @@ public class GetPendingRoomsResponse {
 		this.status = status;
 	}
 
-	public List<String> getPendingRooms() {
+	public List<JsonPendingRoom> getPendingRooms() {
 		return pendingRooms;
 	}
 
-	public void setPendingRooms(List<String> pendingRooms) {
+	public void setPendingRooms(List<JsonPendingRoom> pendingRooms) {
 		this.pendingRooms = pendingRooms;
+	}
+
+	public int getNumUsers() {
+		return numUsers;
+	}
+
+	public void setNumUsers(int numUsers) {
+		this.numUsers = numUsers;
+	}
+
+	public List<String> getNoObjUsers() {
+		return noObjUsers;
+	}
+
+	public void setNoObjUsers(List<String> noObjUsers) {
+		this.noObjUsers = noObjUsers;
 	}
 
 }

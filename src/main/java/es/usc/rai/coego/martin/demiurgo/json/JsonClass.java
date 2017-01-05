@@ -2,20 +2,11 @@ package es.usc.rai.coego.martin.demiurgo.json;
 
 import java.util.List;
 
-/*
- * protected String className;
-	protected DemiurgoClass parentClass;
-	protected Map<String, ValueInterface> fields;
-	protected Map<String, ClassMethod> methods;
-	protected ClassMethod constructor;
-	protected World world;
-	protected String code;
- */
 public class JsonClass {
 	private String classname;
 	private JsonClass parent;
 	private List<JsonVariable> fields;
-	private List<String> methods; //TODO
+	private List<JsonMethod> methods;
 	private String code;
 	
 	public String getClassName() {
@@ -36,10 +27,10 @@ public class JsonClass {
 	public void setFields(List<JsonVariable> fields) {
 		this.fields = fields;
 	}
-	public List<String> getMethods() {
+	public List<JsonMethod> getMethods() {
 		return methods;
 	}
-	public void setMethods(List<String> methods) {
+	public void setMethods(List<JsonMethod> methods) {
 		this.methods = methods;
 	}
 	public String getCode() {

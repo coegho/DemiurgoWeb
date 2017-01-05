@@ -10,8 +10,8 @@
 		<h1 th:text="${path}">/region1/city1/inn</h1>
 		<a th:href="@{/room(path=${path})}">Go to Room Panel</a>
 		<div id="arrows">
-			<a th:if="${prevpag} != null" th:href="@{~/history(path=${path},first=${prevpag},count=${countpag})}">⇦</a>
-			<a th:if="${postpag} != null" th:href="@{~/history(path=${path},first=${postpag},count=${countpag})}">⇨</a>
+			<a th:if="${prevpag} != null" th:href="@{/history(path=${path},first=${prevpag},count=${countpag})}">⇦</a>
+			<a th:if="${postpag} != null" th:href="@{/history(path=${path},first=${postpag},count=${countpag})}">⇨</a>
 		</div>
 		<div id="actions">
 			<div th:each="action : ${actions}" class="action" th:id="'act'+${action.id}"
@@ -20,7 +20,7 @@
 				<a th:href="@{/narrate(id=${action.id})}">Edit</a></p>
 				<details class="witnesses" th:if="${not #lists.isEmpty(action.witnesses)}">
 					<summary>Witnesses</summary>
-						<span th:each="w : ${action.witnesses}" th:text="${w}">Some guy</span>
+						<span th:each="w : ${action.witnesses}" th:text="${w.user}">Some guy</span>
 				</details>
 				<p class="narration" th:utext="${action.narration}">Narration</p>
 			</div>

@@ -24,7 +24,7 @@ label {
 	color: #5c3566;
 }
 
-input {
+input, select {
 	margin: 5px 0px 20px;
 	font-size: 14pt;
 	width: 160px;

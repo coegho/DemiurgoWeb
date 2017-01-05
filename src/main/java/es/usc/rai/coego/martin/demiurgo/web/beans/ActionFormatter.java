@@ -27,6 +27,10 @@ public class ActionFormatter {
 			Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 	private static Pattern youtubePat = Pattern.compile("\\[youtube\\](.*?)\\[\\/youtube\\]",
 			Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+	private static Pattern comPat = Pattern.compile("\\[com\\](.*?)\\[\\/com\\]",
+			Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+	private static Pattern hidPat = Pattern.compile("\\[o=([\\s\\w]*)\\](.*?)\\[\\/o\\]",
+			Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 	
 	public static String BBCodeToHtml(String code) {
 		String html = HtmlUtils.htmlEscape(code);
@@ -38,6 +42,8 @@ public class ActionFormatter {
 		html = urlLongPat.matcher(html).replaceAll("<a href='$1' target='_blank'>$2</a>");
 		html = listPat.matcher(html).replaceAll("<ul>$1</ul>");
 		html = itemPat.matcher(html).replaceAll("<li>$1</li>");
+		html = hidPat.matcher(html).replaceAll("$2");
+		html = comPat.matcher(html).replaceAll("<details class='comment'><summary>GM Comment</summary>$1</details>");
 		html = youtubePat.matcher(html).replaceAll("<iframe width='560' height='315' src='https://www.youtube.com/embed/$1' frameborder='0' allowfullscreen></iframe>");
 		html = html.replace("\n", "<br />");
 		return html;

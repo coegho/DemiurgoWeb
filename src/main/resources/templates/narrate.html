@@ -6,33 +6,35 @@
 <script src="jquery-3.1.1.min.js"></script>
 <script src="jquery-ui.min.js"></script>
 <script src="roomfunctions.js"></script>
+
+<!-- Dialogs -->
+<link rel="stylesheet" href="remodal/remodal.css" />
+<link rel="stylesheet" href="remodal/remodal-default-theme.css" />
+<script src="remodal/remodal.min.js"></script>
+
 <script th:inline="javascript">
 var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj':{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0},'role':'user'}],'id':0,'longPath':'/region1/city1/inn','objects':[{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0}],'variables':[{'name':'bob','type':'OBJECT/character','value':'#0'}]};
 </script>
 </head>
 <body>
+	
+	<div th:replace="room :: remodal"></div>
+	
 	<header th:replace="fragments/header :: gm">Header</header>
-	<main>
+	<main class="remodal-bg">
 		<h1 th:text="'Action #' + ${action.id} + ' on ' + ${action.room}">Action # on /region1/city1/inn</h1>
 		<a th:if="${action.published}" href="#"
 		   th:href="@{'/history#act' + ${action.id}(path=${action.room})}">Return to History</a>
 		<div>
 		<details class="roomstatus">
 			<summary>See Room Status</summary>
-			<h2>Variables</h2>
-			<div id="variables" class="varpanel"></div>
-			<div style="clear: both;"></div>
-			<h2>Objects</h2>
-			<div id="objects" class="data_select"></div>
-			<div style="clear:both;"></div>
-			<div class="data_container">
-				<div id="selected_obj" class="float">No object
-					selected</div>
-				<div class="float" id="obj_img"></div>
+			<div id="objpanel">
+				<h2>Variables</h2>
+				<div id="variables" class="varpanel"></div>
+				<div style="clear: both;"></div>
+				<div th:replace="room :: roomobjects"></div>
 				<div style="clear: both;"></div>
 			</div>
-			<div id="fields" class="varpanel"></div>
-			<div style="clear: both;"></div>
 		</details>
 		
 			<p th:text="${action.date}" class="date"></p>
@@ -40,13 +42,20 @@ var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj
 			<div class="prenarration">
 				<pre th:text="${action.narration}"></pre>
 			</div>
-			<details class="witnesses" th:if="${not #lists.isEmpty(action.witnesses)}">
-				<summary>Witnesses</summary>
-					<span th:each="w : ${action.witnesses}" th:text="${w}">Some guy</span>
+			<details th:if="${not #lists.isEmpty(action.witnesses)}">
+				<summary>Witnesses and decisions</summary>
+				<div id="decisions">
+					<div class="decision" th:each="w : ${action.witnesses}" th:id="'user-'+${w.user}">
+						<h3 class="float" th:text="${w.user}">Some guy</h3>
+						<div class='userobj'></div>
+						<div style="clear:both;"></div>
+						<p th:if="${w.decision}!=null" th:text="${w.decision}">Some text</p>
+						<p th:if="${w.decision}==null">(User did not submit a decision)</p>
+					</div>
+					<div style="clear:both;"></div>
+				</div>
 			</details>
 		</div>
-		
-		
 		
 		<form action="#" method="post" th:action="@{/narrate}" th:object="${narrateActionForm}">
 			<input type="hidden" th:field="*{actionId}" />

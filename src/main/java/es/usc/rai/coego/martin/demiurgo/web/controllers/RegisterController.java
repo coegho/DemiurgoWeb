@@ -30,6 +30,8 @@ public class RegisterController {
 	@PostMapping("/register")
 	public String registerUser(@Valid RegisterForm registerForm, BindingResult br, Model model) {
 		if(br.hasErrors()) {
+		    WorldListResponse res = dc.doGet(null, "worlds", WorldListResponse.class);
+		    model.addAttribute("worlds", res.getWorlds());
 			return "register";
 		}
 		RegisterUserRequest req = new RegisterUserRequest();

@@ -9,7 +9,7 @@
 	<header th:replace="fragments/header :: gm">Header</header>
 	<main>
 	<h2>Create new room</h2>
-	<form action="#" method="POST" th:action="@{~/createroom}"
+	<form action="#" method="POST" th:action="@{/createroom}"
 		th:object="${createRoomForm}">
 		<label for="path">Path:</label>
 		<input type="text" th:field="*{path}"/>

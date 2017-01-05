@@ -7,36 +7,61 @@
 <script src="jquery-3.1.1.min.js"></script>
 <script src="jquery-ui.min.js"></script>
 <script src="roomfunctions.js"></script>
+
+<!-- Dialogs -->
+<link rel="stylesheet" href="remodal/remodal.css" />
+<link rel="stylesheet" href="remodal/remodal-default-theme.css" />
+<script src="remodal/remodal.min.js"></script>
+
 <script th:inline="javascript">
 var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj':{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0},'role':'user'}],'id':0,'longPath':'/region1/city1/inn','objects':[{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0, 'methods':[{'args':['friend'],'name':'greet','returnArg':'result'}]}],'variables':[{'name':'bob','type':'OBJECT/character','value':'#0'}]};
 </script>
 </head>
 <body>
-	<header th:replace="fragments/header :: gm">Header</header>
-	<main>
-	<h1 th:text="${room.longPath}">/region1/city1/inn</h1>
-	<a th:href="@{/history(path=${room.longPath})}">See room history</a>
-	<h2>Decisions</h2>
-	<div th:each="user : ${room.users}">
-		<h4 th:text="${user.name} + ' -> #' + ${user.obj.id}">User1 -> #0</h4>
-		<p class="decision" th:if="${user.decision}!=null" th:text="${user.decision}">Text with a description of the
-			action.</p>
-	</div>
-
-	<div class="float" id="objpanel">
-		<h2>Objects</h2>
-		<div id="objects" class="data_select"></div>
-		<div style="clear:both;"></div>
-		<div class="data_container">
-			<div id="selected_obj" class="float">No object
-				selected</div>
-			<div class="float" id="obj_img"></div>
-			<div style="clear: both;"></div>
+	<div  th:fragment="remodal">
+		<div class="remodal" data-remodal-id="object" role="dialog">
+		  <button data-remodal-action="close" class="remodal-close"></button>
+		  <h1 id="v_name">Object preview</h1>
+		  <div class="data_container">
+					<div id="selected_obj" class="float">No object
+						selected</div>
+					<div class="float" id="obj_img"></div>
+					<div style="clear: both;"></div>
+				</div>
 		</div>
-		<div id="fields" class="varpanel"></div>
-		<div style="clear: both;"></div>
-		<div id="methods" class="varpanel"></div>
 	</div>
+	
+	<header th:replace="fragments/header :: gm">Header</header>
+	<main class="remodal-bg">
+		<h1 th:text="${room.longPath}">/region1/city1/inn</h1>
+		<a th:href="@{/history(path=${room.longPath})}">See room history</a>
+		<h2>Users and decisions</h2>
+		<div id="decisions">
+			<div class="decision" th:each="user : ${room.users}" th:id="'user-'+${user.name}">
+				<h2 class="float" th:text="${user.name}">user1</h2>
+				<div class='userobj'></div>
+				<div style="clear:both;"></div>
+				<p th:if="${user.decision}!=null" th:text="${user.decision}">Text with a description of the
+					action.</p>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+	
+		<div class="float" id="objpanel">
+			<div th:fragment="roomobjects">
+				<h2>Objects</h2>
+				<div id="objects" class="data_select"></div>
+				<div style="clear:both;"></div>
+				<h3>Fields</h3>
+				<div id="fields" class="varpanel"></div>
+				<div style="clear: both;"></div>
+				<h3>Inventories</h3>
+				<div id="inventorypanel"></div>
+				<div style="clear:both;"></div>
+			</div>
+			<h3>Methods</h3>
+			<div id="methods" class="varpanel"></div>
+		</div>
 
 		<div class="float" id="right_panel">
 			<h2>Variables</h2>
@@ -46,7 +71,7 @@ var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj
 			<form action="#" method="post" th:action="@{/room}"
 				th:object="${processCodeForm}">
 				<input type="hidden" th:field="*{path}" /> <label for="code">Submit Code</label>
-				<textarea th:field="*{code}" rows="20" cols="80"></textarea>
+				<textarea class="code" th:field="*{code}" rows="20" cols="80"></textarea>
 				<p th:if="${#fields.hasErrors('code')}" th:errors="*{code}">Code
 					error</p>
 				<p th:if="${parseErrors} != null" th:text="${parseErrors}"></p>
@@ -57,6 +82,12 @@ var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj
 					<input type="checkbox" th:field="*{createAction}" />
 				</div>
 			</form>
+			<details class="roomselector">
+				<summary>See Rooms</summary>
+				<div class="selectroom">
+					<div th:each="p : ${paths}" th:text="${p}" th:class="(${p}==${room.longPath})?'thislocation':''">/region1/city1/inn</div>
+				</div>
+			</details>
 		</div>
 		<div style="clear: both;"></div>
 	</main>

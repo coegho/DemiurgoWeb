@@ -24,6 +24,16 @@ body {
 	font-family: Carlito, arial, sans;
 }
 
+main a:LINK, main a:VISITED {
+	text-decoration: none;
+	color: #180625;
+	font-weight: bold;
+}
+
+main a:HOVER {
+	color: #555753;
+}
+
 main {
 	margin: 25px;
 	color: #2e3436;
@@ -95,6 +105,10 @@ select {
 div#objpanel {
 	margin-right:50px;
 	width: 500px;
+	border: solid black 2px;
+	border-radius: 10px;
+	background: #af7822;
+	color: black;
 }
 
 #obj_img {
@@ -111,11 +125,12 @@ div#objpanel {
 div.data_container {
 	background-color: #af7822;
 	color: black;
-	margin: 0 10px 0 0;
+	margin: 0 auto;
 	min-height: 150px;
 	max-height: 240px;
 	border: solid black 2px;
 	width: 500px;
+	clear:both;
 }
 
 
@@ -159,12 +174,21 @@ div.data_container h1 {
 	font-size: 14pt;
 }
 
+div.data_container h2 {
+	margin: 0;
+	font-size: 13pt;
+}
+
 div.data_container p {
 	margin: 5px;
 }
 
 div.data_select {
 	width: 100%;
+}
+
+details.data_select {
+	border: solid black 1px;
 }
 
 .obj {
@@ -178,6 +202,10 @@ div.data_select {
 	float: left;
 }
 
+#inventorypanel .obj {
+	font-size: 10pt;
+}
+
 .obj.selected {
 	background-color: #ddbd92;
 }
@@ -186,7 +214,7 @@ div.data_select {
 	width: 600px;
 }
 
-#code {
+.code {
 	max-width: 500px;
 	height: 240px;
 	color: #171300;
@@ -224,9 +252,6 @@ h2 {
 	margin: 10px 0px 5px;
 }
 
-.decision {
-	font-style: italic;
-}
 
 /* HISTORY */
 
@@ -307,9 +332,6 @@ label.newaction + input {
 }
 
 /* USER */
-.decision {
-	font-style: italic;
-}
 
 textarea#decision {
 	width:100%;
@@ -322,4 +344,124 @@ textarea#decision {
 
 .ui-draggable-dragging {
 	cursor: grabbing;
+}
+
+h3, h4 {
+	margin: 10px 0px 5px;
+}
+
+details.comment {
+	border: solid #362307 3px;
+	margin: 15px;
+	border-radius: 5px;
+}
+
+details.comment summary {
+	background: #ce953b;
+}
+
+
+.pendingrooms > div {
+	border: solid #362307 4px;
+	background: #ce953b;
+	border-radius: 20px 20px 0px 0px;
+}
+
+.pendingrooms p {
+	margin: 15px;
+	font-weight: bold;
+}
+
+.pendingrooms h2 {
+	background: #2e3436;
+	color: #eeeeec;
+	padding: 5px 15px;
+}
+
+.pendingrooms .decidingusers {
+	padding: 0;
+	margin: 15px;
+}
+
+.pendingrooms .decidingusers li {
+	display: inline;
+	margin-right: 5px;
+	font-style: italic;
+}
+
+
+#decisions  div.decision {
+	float:left;
+	min-width: 300px;
+	max-width: 500px;
+	border: solid black 3px;
+	margin: 10px;
+	margin-radius: 10px;
+	color: black;
+	padding: 15px;
+	background: #babdb6;
+}
+
+div.decision p {
+	background: #7c9d3e;
+	padding: 10px 5px;
+	margin: 5px 0;
+	font-style: italic;
+}
+
+details.roomselector {
+	margin-top: 15px;
+}
+
+details.roomselector summary {
+	margin-bottom: 10px;
+}
+
+details.roomselector .selectroom div {
+	font-size: 11pt;
+	display: inline;
+	padding: 5px;
+	margin-top: 5px;
+	border: solid black 2px;
+	border-radius: 5px;
+	color: #d3d7cf;
+	font-weight: bold;
+	background: #2e3436;
+}
+
+details.roomselector .selectroom div.thislocation {
+	background: #a40000;
+}
+
+
+ul#classes li {
+	float:left;
+	width: 300px;
+}
+
+.showclass {
+	width: 600px;
+	padding: 15px;
+	border: solid black 3px;
+	border-radius: 15px;
+}
+
+#parentclass {
+	background: #d7b37c;
+	border: solid black 3px;
+	border-radius: 15px;
+}
+
+.var a.var-close {
+	color: #babdb6;
+	font-size: 12pt;
+	float:right;
+	display: none;
+}
+
+.var.selected a.var-close {
+	color: #babdb6;
+	font-size: 12pt;
+	float:right;
+	display: inline;
 }
