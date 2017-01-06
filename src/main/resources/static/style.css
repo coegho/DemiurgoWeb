@@ -24,13 +24,13 @@ body {
 	font-family: Carlito, arial, sans;
 }
 
-main a:LINK, main a:VISITED {
+a:LINK, a:VISITED {
 	text-decoration: none;
 	color: #180625;
 	font-weight: bold;
 }
 
-main a:HOVER {
+a:HOVER {
 	color: #555753;
 }
 
@@ -460,6 +460,7 @@ ul#classes li {
 }
 
 .var.selected a.var-close {
+	content: 'x';
 	color: #babdb6;
 	font-size: 12pt;
 	float:right;

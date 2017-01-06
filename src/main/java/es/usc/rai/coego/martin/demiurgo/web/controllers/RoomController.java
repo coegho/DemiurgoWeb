@@ -18,6 +18,10 @@ import es.usc.rai.coego.martin.demiurgo.json.CheckRoomResponse;
 import es.usc.rai.coego.martin.demiurgo.json.CreateRoomRequest;
 import es.usc.rai.coego.martin.demiurgo.json.DeleteVariableRequest;
 import es.usc.rai.coego.martin.demiurgo.json.DeleteVariableResponse;
+import es.usc.rai.coego.martin.demiurgo.json.DestroyObjectRequest;
+import es.usc.rai.coego.martin.demiurgo.json.DestroyObjectResponse;
+import es.usc.rai.coego.martin.demiurgo.json.DestroyRoomRequest;
+import es.usc.rai.coego.martin.demiurgo.json.DestroyRoomResponse;
 import es.usc.rai.coego.martin.demiurgo.json.ExecuteCodeRequest;
 import es.usc.rai.coego.martin.demiurgo.json.ExecuteCodeResponse;
 import es.usc.rai.coego.martin.demiurgo.json.JsonAction;
@@ -147,6 +151,23 @@ public class RoomController {
 		req.setVarName(var);
 		dc.doPost(user.getToken(), "delvar", req, DeleteVariableRequest.class, DeleteVariableResponse.class);
 		return "redirect:/room?path="+path;
+	}
+	
+	@GetMapping("destroyobj")
+	public String destroyObject(@RequestParam("id") long id, @RequestParam("back") String back) {
+		DestroyObjectRequest req = new DestroyObjectRequest();
+		req.setObjId(id);
+		req.setDestroyContents(true);
+		dc.doPost(user.getToken(), "destroyobj", req, DestroyObjectRequest.class, DestroyObjectResponse.class);
+		return "redirect:" + back;
+	}
+	
+	@GetMapping("destroyroom")
+	public String destroyRoom(@RequestParam("path") String path) {
+		DestroyRoomRequest req = new DestroyRoomRequest();
+		req.setPath(path);
+		dc.doPost(user.getToken(), "destroyroom", req, DestroyRoomRequest.class, DestroyRoomResponse.class);
+		return "redirect:/rooms";
 	}
 
 	private CheckRoomResponse requestRoomData(String path) {

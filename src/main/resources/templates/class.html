@@ -3,11 +3,14 @@
 <head>
 <title th:text="${cl.className + ' - DemiurgoWeb'}">Class Panel - DemiurgoWeb</title>
 <link rel="stylesheet" href="style.css" />
+<script src="jquery-3.1.1.min.js"></script>
+<script src="classfunctions.js"></script>
 </head>
 <body>
 	<header th:replace="fragments/header :: gm">Header</header>
 	<main>
 		<div class="showclass float">
+			<a id="destroy" th:href="@{/destroyclass(classname=${cl.className})}">Destroy this class</a>
 			<h1 th:text="'Class: ' + ${cl.className}">Class: character</h1>
 			<h4 th:if="${cl.parent}!=null">Inherits from <a th:href="@{/class(name=${cl.parent.className})}" th:text="${cl.parent.className}">object</a></h4>
 			<h3>Current Fields:</h3>

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.usc.rai.coego.martin.demiurgo.json.AllClassesResponse;
 import es.usc.rai.coego.martin.demiurgo.json.CreateClassRequest;
 import es.usc.rai.coego.martin.demiurgo.json.CreateClassResponse;
+import es.usc.rai.coego.martin.demiurgo.json.DestroyClassRequest;
+import es.usc.rai.coego.martin.demiurgo.json.DestroyClassResponse;
 import es.usc.rai.coego.martin.demiurgo.json.JsonClass;
 import es.usc.rai.coego.martin.demiurgo.web.beans.DemiurgoConnector;
 import es.usc.rai.coego.martin.demiurgo.web.beans.LoggedUser;
@@ -103,5 +105,13 @@ public class ClassController {
 			model.addAttribute("parseErrors", res.getStatus().getDescription());
 			return "class";
 		}
+	}
+	
+	@GetMapping("/destroyclass")
+	public String destroyClass(@RequestParam("classname") String classname) {
+		DestroyClassRequest req = new DestroyClassRequest();
+		req.setClassname(classname);
+		dc.doPost(user.getToken(), "destroyclass", req, DestroyClassRequest.class, DestroyClassResponse.class);
+		return "redirect:/classes";
 	}
 }

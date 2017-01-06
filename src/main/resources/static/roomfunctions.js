@@ -118,6 +118,7 @@ function loadObjModal(item) {
 			$("#selected_obj")
 			.append("<p>"+ f.type+ " "+ f.name+ " = '"+ f.value+ "'</p>");
 	});
+	$(".remodal a").attr("href", "destroyobj?id="+item.id+"&back="+ encodeURI(location.pathname+location.search));
 	location.hash = "#object";
 }
 
@@ -183,3 +184,7 @@ function makeMethod(m) {
 				
 			}).draggable({ revert : true });
 }
+
+$(".remodal a").ready(function() {
+	$(".remodal a").click(function() { return confirm("Are you sure you want to destroy this object?")});
+}); 
