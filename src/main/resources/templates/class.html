@@ -3,8 +3,20 @@
 <head>
 <title th:text="${cl.className + ' - DemiurgoWeb'}">Class Panel - DemiurgoWeb</title>
 <link rel="stylesheet" href="style.css" />
-<script src="jquery-3.1.1.min.js"></script>
+
+<!-- jQuery -->
+<script src="lib/jquery/jquery-3.1.1.min.js"></script>
+
+
+<!-- CodeMirror -->
+<link rel="stylesheet" href="lib/codemirror/codemirror.css" />
+<link rel="stylesheet" href="lib/codemirror/material.css" />
+<script src="lib/codemirror/codemirror.js"></script>
+<script src="lib/codemirror/mode/simple.js"></script>
+
 <script src="classfunctions.js"></script>
+
+<script src="code.js"></script>
 </head>
 <body>
 	<header th:replace="fragments/header :: gm">Header</header>

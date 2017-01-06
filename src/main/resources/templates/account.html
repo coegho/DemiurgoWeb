@@ -20,6 +20,20 @@
 			Role:
 			<th:block th:text="${user.role}">(Role)</th:block>
 		</p>
+		<h2>Change password</h2>
+		<form action="#" method="POST" th:action="@{/changepasswd}" th:object="${changePasswordForm}">
+			<label for="pass">Old Password:</label>
+			<input type="password" th:field="*{oldPassword}" />
+			<label for="pass">New Password:</label>
+			<input type="password" th:field="*{newPassword}" />
+			<div>
+				<button type="submit">Change</button>
+			</div>
+			<p th:if="${#fields.hasErrors('oldPassword')}" th:errors="*{oldPassword}">Old Password error</p>
+			<p th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}">New Password error</p>
+			<p th:if="${chngd}==true">Password changed successfuly.</p>
+			<p th:if="${chngd}==false">Cannot change password. Check your old password.</p>
+		</form>
 	</main>
 </body>
 </html>

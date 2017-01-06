@@ -9,13 +9,13 @@ public class GetPendingRoomsResponse {
 	private ResponseStatus status;
 	private List<JsonPendingRoom> pendingRooms;
 	private int numUsers;
-	private List<String> noObjUsers;
+	private List<JsonUser> noObjUsers;
 
 	public GetPendingRoomsResponse() {
 	}
 
 	public GetPendingRoomsResponse(ResponseStatus status, List<JsonPendingRoom> pendingRooms, int numUsers,
-			List<String> noObjUsers) {
+			List<JsonUser> noObjUsers) {
 		super();
 		this.status = status;
 		this.pendingRooms = pendingRooms;
@@ -47,11 +47,11 @@ public class GetPendingRoomsResponse {
 		this.numUsers = numUsers;
 	}
 
-	public List<String> getNoObjUsers() {
+	public List<JsonUser> getNoObjUsers() {
 		return noObjUsers;
 	}
 
-	public void setNoObjUsers(List<String> noObjUsers) {
+	public void setNoObjUsers(List<JsonUser> noObjUsers) {
 		this.noObjUsers = noObjUsers;
 	}
 

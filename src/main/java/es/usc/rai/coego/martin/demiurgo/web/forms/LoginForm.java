@@ -13,8 +13,8 @@ public class LoginForm {
 	@Pattern(regexp= "^[A-Z0-9_]+$", flags = {Pattern.Flag.CASE_INSENSITIVE})
 	private String username;
 	
-	/*@NotNull
-	@Size(min = 4) //TODO: use passwords!*/
+	@NotNull
+	@Size(min = 4)
 	private String pass;
 
 	public String getWorld() {

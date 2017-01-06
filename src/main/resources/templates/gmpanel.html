@@ -10,9 +10,13 @@
 	<main>
 		<h1>World Status</h1>
 		<p th:text="${numUsers} + ' players in this world'">6 players in this world</p>
-		<div th:if="${!#lists.isEmpty(noObjUsers)}">
-			<p>These users don't have any object assigned:</p>
-			<p th:each="u : ${noObjUsers}" th:text="${u}"></p>
+		<div id="decisions" th:if="${!#lists.isEmpty(noObjUsers)}">
+			<h2>Users without object assigned</h2>
+			<div class="decision" th:each="u : ${noObjUsers}">
+				<h3 th:text="${u.name}">User1</h3>
+				<p th:if="${u.decision}!=null" th:text="${u.decision}">Current decision</p>
+			</div>
+			<div style="clear:both;"></div>
 		</div>
 		<h2>Pending rooms</h2>
 		<div class="pendingrooms">

@@ -466,3 +466,8 @@ ul#classes li {
 	float:right;
 	display: inline;
 }
+
+.CodeMirror {
+	font-size: 14pt;
+	font-weight: bold;
+}

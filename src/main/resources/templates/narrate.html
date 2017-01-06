@@ -3,14 +3,22 @@
 <head>
 <title th:text="'Action #' + ${action.id}">Action #1 - DemiurgoWeb</title>
 <link rel="stylesheet" href="style.css" />
-<script src="jquery-3.1.1.min.js"></script>
-<script src="jquery-ui.min.js"></script>
-<script src="roomfunctions.js"></script>
+<link rel="stylesheet" href="style.css" />
+
+<!-- jQuery -->
+<script src="lib/jquery/jquery-3.1.1.min.js"></script>
+<script src="lib/jquery/jquery-ui.min.js"></script>
 
 <!-- Dialogs -->
-<link rel="stylesheet" href="remodal/remodal.css" />
-<link rel="stylesheet" href="remodal/remodal-default-theme.css" />
-<script src="remodal/remodal.min.js"></script>
+<link rel="stylesheet" href="lib/remodal/remodal.css" />
+<link rel="stylesheet" href="lib/remodal/remodal-default-theme.css" />
+<script src="lib/remodal/remodal.min.js"></script>
+
+<!-- CodeMirror -->
+<link rel="stylesheet" href="lib/codemirror/codemirror.css" />
+<script src="lib/codemirror/codemirror.js"></script>
+
+<script src="roomfunctions.js"></script>
 
 <script th:inline="javascript">
 var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj':{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0},'role':'user'}],'id':0,'longPath':'/region1/city1/inn','objects':[{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0}],'variables':[{'name':'bob','type':'OBJECT/character','value':'#0'}]};
