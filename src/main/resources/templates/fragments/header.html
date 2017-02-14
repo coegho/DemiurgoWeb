@@ -4,7 +4,7 @@
 <body>
 	<header th:fragment="user">
 		<ul>
-			<li><a href="#" th:href="@{/user}">Situation</a></li>
+			<li><a href="#" th:href="@{/user}">Home</a></li>
 			<li><a href="#" th:href="@{/status}">My Status</a></li>
 			<li><a href="#" th:text="${user.name}" th:href="@{/account}">Profile</a></li>
 			<li><a href="#" th:href="@{/logout}">Logout</a></li>
@@ -12,11 +12,26 @@
 	</header>
 	<header th:fragment="gm">
 		<ul>
-			<li><a href="#" th:href="@{/gm}">Start</a></li>
-			<li><a href="#" th:href="@{/rooms}">Rooms</a></li>
-			<li><a href="#" th:href="@{/classes}">Classes</a></li>
-			<li><a href="#" th:text="${user.name}" th:href="@{/account}">Profile</a></li>
-			<li><a href="#" th:href="@{/logout}">Logout</a></li>
+			<li>
+				<img src="images/icons/demiurgo.png" />
+				<a href="#" th:href="@{/gm}">Home</a>
+			</li>
+			<li>
+				<img src="images/icons/cabana.png" />
+				<a href="#" th:href="@{/rooms}">Rooms</a>
+			</li>
+			<li>
+				<img src="images/icons/requiario_branco.png" />
+				<a href="#" th:href="@{/classes}">Classes</a>
+			</li>
+			<li>
+				<img src="images/icons/requila_user.png" />
+				<a href="#" th:text="${user.name}" th:href="@{/account}">Profile</a>
+			</li>
+			<li>
+				<img src="images/icons/sinal.png" />
+				<a href="#" th:href="@{/logout}">Logout</a>
+			</li>
 		</ul>
 	</header>
 	<footer></footer>

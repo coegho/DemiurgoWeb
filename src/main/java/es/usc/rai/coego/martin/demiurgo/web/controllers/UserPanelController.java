@@ -32,40 +32,58 @@ public class UserPanelController {
 
 	@Autowired
 	DemiurgoConnector dc;
-	
+
 	@ModelAttribute("user")
 	public LoggedUser getUser() {
 		return user;
 	}
-	
+
 	@GetMapping("/user")
-	public String seePanel(@RequestParam(value="first", defaultValue="-10") String first, @RequestParam(value="count", defaultValue="10") String count, UserPanelForm userPanelForm, Model model) {
-		MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+	public String seePanel(@RequestParam(value = "first", defaultValue = "-10") String first,
+			@RequestParam(value = "count", defaultValue = "10") String count, UserPanelForm userPanelForm,
+			Model model) {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("first", first);
 		params.add("count", count);
 		PastActionsResponse res = dc.doGet(user.getToken(), "pastactions", params, PastActionsResponse.class);
-		
+
 		List<String> actions = new ArrayList<>();
-		for(String a : res.getActions()) {
+		for (String a : res.getActions()) {
 			actions.add(ActionFormatter.BBCodeToHtml(a));
 		}
 		model.addAttribute("actions", actions);
 		
+		int f, c, t;
+		f = Integer.parseInt(first);
+		c = Integer.parseInt(count);
+		t = res.getTotalActions();
+		if(f < 0)
+			f = t + f;
+		
+		if(res.getTotalActions() > c) {
+			if(f > 0) {
+				model.addAttribute("prevpag", ((f-c)<0 ? 0 : (f-c)));
+			}
+			if((f+c) < t) {
+				model.addAttribute("postpag", f+c);
+			}
+		}
+		model.addAttribute("countpag", c);
+
 		MyUserResponse me = dc.doGet(user.getToken(), "me", null, MyUserResponse.class);
 		model.addAttribute("current", me.getUser().getDecision());
 		return "userpanel";
 	}
-	
+
 	@PostMapping("/user")
 	public String submitDecision(@Valid UserPanelForm userPanelForm, BindingResult br, Model model) {
-		if(br.hasErrors()) {
+		if (br.hasErrors()) {
 			return "redirect:/user";
 		}
 		SubmitDecisionRequest req = new SubmitDecisionRequest();
 		req.setDecision(userPanelForm.getDecision());
-		dc.doPost(user.getToken(), "submitdecision", req, SubmitDecisionRequest.class,
-				Response.class);
-		
+		dc.doPost(user.getToken(), "submitdecision", req, SubmitDecisionRequest.class, Response.class);
+
 		return "redirect:/user";
 	}
 }

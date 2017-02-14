@@ -13,21 +13,26 @@
 		<div id="decisions" th:if="${!#lists.isEmpty(noObjUsers)}">
 			<h2>Users without object assigned</h2>
 			<div class="decision" th:each="u : ${noObjUsers}">
-				<h3 th:text="${u.name}">User1</h3>
+				<img class="float" src="images/icons/requila_user.png" />
+				<h3 class="float" th:text="${u.name}">User1</h3>
+				<div style="clear:both;"></div>
 				<p th:if="${u.decision}!=null" th:text="${u.decision}">Current decision</p>
 			</div>
 			<div style="clear:both;"></div>
 		</div>
-		<h2>Pending rooms</h2>
-		<div class="pendingrooms">
+		<h2>Active rooms</h2>
+		<div class="rooms">
 			<div th:each="room : ${pendingRooms}">
 				<h3 th:text="${room.path}">/region1/city1/inn</h3>
 				<p th:text="${room.numObjects} + ' objects'">5 objects</p>
 				<p th:text="${#lists.size(room.decidingUsers)} + ' of ' + ${room.numUsers} + ' users trying to act:'">1 of 2 users trying to act:</p>
 				<ul class="decidingusers"><li th:each="u : ${room.decidingUsers}" th:text="${u}"></li></ul>
-				<p><a th:href="@{/room(path=${room.path})}">Go to room</a></p>
+				<p>
+					<a th:href="@{/room(path=${room.path})}">Go to Room Panel</a> |
+					<a th:href="@{/history(path=${room.path})}">See Room History</a>
+				</p>
 			</div>
-			<p th:if="${#lists.isEmpty(pendingRooms)}">There are no pending rooms.</p>
+			<p th:if="${#lists.isEmpty(pendingRooms)}">There are no active rooms.</p>
 		</div>
 	</main>
 </body>

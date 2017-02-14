@@ -2,5 +2,10 @@ server:
   address: 127.0.0.1
   port: 8080
 
+spring:
+  mvc:
+    favicon:
+      enabled: false
+
 demiurgo:
   address: 'http://localhost:5324/demiurgo/'

@@ -2,13 +2,18 @@
 <html>
 <head>
 <title>Registered - Demiurgo Web</title>
-<link rel="stylesheet" href="style_register.css" />
+<link rel="stylesheet" href="style_registered.css" />
 </head>
 <body>
 	<main>
+		<img src="images/leontocephaline.jpg" class="float" />
+		<div class="float">
 		<h1>Registration complete</h1>
 		<p th:if="${active}">Your account is now active. You can start playing now.</p>
 		<a th:href="@{/login}">Return to login</a>
+		</div>
+		<img src="images/leontocephaline.jpg" class="float" />
+		<div style="clear:both;"></div>
 	</main>
 </body>
 </html>

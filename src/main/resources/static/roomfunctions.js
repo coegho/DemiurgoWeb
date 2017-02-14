@@ -4,23 +4,32 @@ $("decisions").ready(
 		function() {
 			room.users.forEach(
 					function(u, i) {
-						$("#user-"+u.name+" .userobj")
-						.append(makeObject(u.obj));
-						$("#user-"+u.name+" h2").draggable({revert : true})
+						$("#user-"+u.name+" .userobj .obj")
+						.data("obj", u.obj)
+						.data("dropvalue", "#"+u.obj.id)
+						.draggable({
+							revert : true
+						});
+						$("#user-"+u.name+" .user").draggable({revert : true})
 						.data("dropvalue", "$"+u.name)
 					});
 		});
 
 $("#variables").ready(
 		function() {
-			room.variables.forEach(
-					function(v, i) {
-						$("#variables").append(makeVariable(v)
-						.data("dropvalue", v.name).append(jQuery("<a />",
-								{text:"x", class:"var-close", href:"delvar?path="+room.longPath+"&var="+v.name})
-								.click(function() { return confirm("Are you sure you want to delete variable "+v.name+"?") })))
+			$(".var").each(
+					function() {
+						$(this).dblclick(function() {
+							$(this).toggleClass("selected")
+							
+						}).draggable({ revert : true }).data("dropvalue", $(this).children(".varname").text());
+						$(this).children(".var-close").click(vardelwarning);
 					});
 		});
+
+function vardelwarning() {
+	return confirm("Are you sure you want to delete variable?")
+}
 
 /* OBJECTS */
 var noobj;
@@ -29,19 +38,43 @@ var selectedId = -1;
 $("#selected_obj").ready(function() {
 	noobj = $("#selected_obj").html();
 	room.objects.forEach(function(item, index) {
-		$("#objects").append(makeObject(item).attr("id", "obj"+item.id));
+		$("#obj"+item.id)
+			.data("obj", item)
+			.data("dropvalue", "#"+item.id)
+					.dblclick(function() { loadObjModal(item) })
+					.draggable({
+						revert : true
+					})
 	});
 });
 
 
 $(".roomselector .selectroom div").ready(function() {
 	$(".roomselector .selectroom div").each(function(i, li) {
-		$(li).draggable({revert : true}).data("dropvalue", "@"+$(li).text());
+		$(li).draggable({revert : true}).data("dropvalue", "@"+$(li).children("span").text());
 	}); 
+});
+
+$(".lapels").ready(function() {
+	$(".lapels").droppable({
+		tolerance : "pointer",
+		accept: ".obj",
+		drop : function(event, ui){
+			selectObject($(ui.draggable).data("obj").id);
+		}
+	});
+	
+	room.objects.forEach(function(item, index) {
+		$("#lapel-"+item.id)
+			.click(function() { selectObject(item.id); return false } )
+			.hover(function(){ showObject(item.id)},
+					function() { showObject(selectedId); })
+	});
 });
 
 $("#code").ready(function() {
 	$("#code").droppable({
+		tolerance: "pointer",
 		drop : function(event, ui) {
 			$("#code").val(function(i, val) {
 				return val +$(ui.draggable).data("dropvalue") + " "
@@ -51,7 +84,7 @@ $("#code").ready(function() {
 });
 
 
-function makeObject(item) {
+/*function makeObject(item) {
 	return jQuery("<div/>", {
 		class : "obj",
 		})
@@ -67,7 +100,7 @@ function makeObject(item) {
 	.draggable({
 		revert : true
 	});
-}
+}*/
 
 function v_name(item) {
 	var v_name = item.classname;
@@ -80,15 +113,15 @@ function v_name(item) {
 }
 
 function makeVariable(v) {
-	return jQuery("<div />").addClass(
-			"var" + (v.type.startsWith("OBJECT") ? " objvar" : ""))
+	return jQuery("<div />").addClass("var " +getTypeCss(v.type))
+			.attr("title", v.type)
 			.append(
 					jQuery("<span />").text(v.name).addClass(
 							"varname"),
-					jQuery("<span />").text("'"
-							+ ((v.value.length > 10)?v.value.substring(0,10)+"...":v.value) + "'").addClass(
+					jQuery("<span />").text(
+							((v.value.length > 10)?v.value.substring(0,7)+"...":v.value)).addClass(
 							"prev"),
-					jQuery("<span />").text("'" + v.value + "'")
+					jQuery("<span />").text(v.value)
 							.addClass("varval")).dblclick(function() {
 				$(this).toggleClass("selected")
 				
@@ -96,76 +129,110 @@ function makeVariable(v) {
 }
 
 function selectObject(id) {
-		showObject(id);
-		selectedId = id;
-		$(".obj.selected").removeClass("selected");
-		$("#obj"+id).addClass("selected");
-	//}
+	showObject(id);
+	selectedId = id;
+	$(".obj.selected").removeClass("selected");
+	$(".lapel.selected").removeClass("selected");
+	$(".lapel.temporal").remove();
+	$("#obj"+id).addClass("selected");
+	$("#lapel-"+id).addClass("selected");
+	if(!$("#lapel-"+id).length) {
+		$(".lapels").prepend(jQuery("<div/>",
+				{ "id": "lapel-"+id,
+				   "class": "lapel temporal float"})
+				   .append(jQuery("<a/>", {"href": "#"}).text("#"+id))
+				   .click(function() { return false } ));
+	}
 }
 
+
 function loadObjModal(item) {
-	$("#selected_obj").html("<h1>"+item.classname+"</h1><h2>#" + item.id + "</h2>");
-	$("#obj_img").html("");
+	$("#modal_fields").html("");
+	
+	$("#v_name").text(item.name);
+	
+	$("#classname").text(item.classname);
+	
+	$("#objid").text("#"+item.id);
+	
+	if(item.imgUrl != null) {
+		$("#obj_img").html(jQuery("<img />").attr("src", item.imgUrl));
+	}
+	else {
+		$("#obj_img").html("");
+	}
+	
+	if(item.description != null) {
+		$("#description").text("\""+ item.description + "\"");
+	}
+	else
+		$("#description").text("");
 	item.fields.forEach(function(f, i) {
-		if(f.name == "v_imgurl") {
-			$("#obj_img").html(jQuery("<img />").attr("src", f.value));
-			
-		}
-		else if(f.name == "v_name") {
-			$("#v_name").text(f.value);
-		}
-		else
-			$("#selected_obj")
-			.append("<p>"+ f.type+ " "+ f.name+ " = '"+ f.value+ "'</p>");
+		$("#modal_fields")
+		.append("<p>"+ f.type + " " + f.name+ " = "+ f.value+ "</p>");
 	});
-	$(".remodal a").attr("href", "destroyobj?id="+item.id+"&back="+ encodeURI(location.pathname+location.search));
+	$(".remodal a").attr("href", "destroyobj?id="+item.id+"&back=room?path="+ $("#path").text());
 	location.hash = "#object";
 }
 
 function showObject(id) {
-	if($("#selected_obj").data("showing") != id) {
+	if($("#objpanel").data("showing") != id) {
+
+		$(".objpanel").hide();
+		//showing
 		if(id == -1) {
-			$("#fields").html("");
-			$("#methods").html("");
-			$("#inventorypanel").html("");
-		}
-		else {
+			$("#objpanel").show();
+		} else if($("#objpanel-"+id).length) {
+			$("#objpanel-"+id).show();
+			
+		}else {
+			//create new panel
+			$("#allobjpanels").append(jQuery("<div/>",
+					{id : "objpanel-"+id})
+					.addClass("objpanel")
+					.html($("#objpanel").html()));
+			
 			var item = $("#obj"+id).data("obj");
-			$("#fields").html("");
-			$("#methods").html("");
-			$("#inventorypanel").html("");
+			$("#objpanel-"+id+ " h2").text(item.name + " ("+item.classname+")");
 			item.fields.forEach(function(f, i) {
-				$("#fields").append(makeVariable(f).data("dropvalue", "#"+item.id+"."+f.name));
+				$("#objpanel-"+id+ " .fields")
+					.append(makeVariable(f).data("dropvalue", "#"+item.id+"."+f.name));
 			});
 			
 			item.methods.forEach(function (m, i) {
-				$("#methods").append(makeMethod(m).data("dropvalue",
-						"#"+item.id+"."+m.name+" ( "+
-						m.args.map(function(x){return "?"}).join(", ")+" ) "));
+				$("#objpanel-"+id+ " .methods").append(makeMethod(m)
+						.draggable(
+							{ revert : true ,
+							  zIndex: 100,
+							  start : function(event, ui) {
+								  $(this).data("dropvalue",
+											"#"+item.id+"."+m.name+" ( "+
+											$.map($(this).children("input"), function(e,i){return e.value}).join(", ")+" ) ")
+							  } }));
 			});
 			
 			item.inventories.forEach(function(inventory, i) {
-				$("#inventorypanel").append(
-						jQuery("<details />",
-								{id: "inv-"+inventory.name,
-								 class: "data_select"})
-						 .append("<summary>"+inventory.name+"</summary>"));
+				$("#objpanel-"+id+ " .inventorypanel").append(
+						jQuery("<div />",
+								{"class": "inv-"+inventory.name+" data_select"})
+						 .append("<h4>"+inventory.name+"</h4>"));
 				inventory.objects.forEach(function(item, index) {
 					jQuery("<div/>", {
 						id : "obj" + item.id,
 						class : "obj",
 						})
 					.data("obj", item)
-					.data("dropvalue", "#"+item.id)
-					.append("<span class='varname'>[" + index + "] -></span>")
-					.append("<span> (" + item.classname + ")</span>")
-					.appendTo("#inv-"+inventory.name)
+					.data("dropvalue", "#"+id+"."+inventory.name+"["+index+"]")
+					.append(jQuery("<img/>").attr("src", "images/icons/requiario.png"))
+					.append("<span class='varname'>[" + index + "] </span>")
+					.append("<span>" + item.name + "</span>")
+					.appendTo("#objpanel-"+id+ " .inv-"+inventory.name)
 					.dblclick(function(){ loadObjModal(item) })
 					.draggable({
 						revert : true
 					});
 				});
-				$("#inv-"+inventory.name).append("<div style='clear:both;'></div>");
+				$("#objpanel-"+id+ " .inv-"+inventory.name).append("<div style='clear:both;'></div>");
 			});
 			
 			
@@ -173,18 +240,36 @@ function showObject(id) {
 	}
 }
 
+
 function makeMethod(m) {
-	return jQuery("<div />").addClass("method")
-			.html(
-					((m.returnArg != null)?"<span class='margs'>"+m.returnArg+" = </span>":"")
-					+ "<span class='mname'>"+m.name+"</span> ("
-					+ "<span class='margs'> " + m.args.join(", ") + "</span> )")
-					.dblclick(function() {
-				$(this).toggleClass("selected")
-				
-			}).draggable({ revert : true });
+	var met = jQuery("<div />").addClass("method").append(
+			jQuery("<span />").addClass("metname").text(m.name)
+			);
+	m.args.forEach(function(arg, index) {
+		//jQuery("<label />", {"for" : "arg-"+m.name+"-"+arg, "text" : arg}).appendTo(met);
+		jQuery("<input />",
+				{"id" : "arg-"+m.name+"-"+arg, "placeholder" : arg})
+				.appendTo(met).droppable({
+					tolerance: "pointer",
+					drop : function(event, ui) {
+						$(this).val(function(i, val) {
+							return $(ui.draggable).data("dropvalue")
+						})}});
+	})
+	return met
+	
 }
 
 $(".remodal a").ready(function() {
 	$(".remodal a").click(function() { return confirm("Are you sure you want to destroy this object?")});
-}); 
+});
+
+function getTypeCss(type) {
+	if(type.endsWith("[]")) {
+		return "arrayvar";
+	}
+	if(type.startsWith("OBJECT")) {
+		return "objvar";
+	}
+	return type.toLowerCase() + "var";
+}

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class PastActionsResponse {
 	private ResponseStatus status;
+	private int totalActions;
 	private List<String> actions;
 	
 	public ResponseStatus getStatus() {
@@ -20,5 +21,13 @@ public class PastActionsResponse {
 	
 	public void setActions(List<String> actions) {
 		this.actions = actions;
+	}
+	
+	public int getTotalActions() {
+		return totalActions;
+	}
+	
+	public void setTotalActions(int totalActions) {
+		this.totalActions = totalActions;
 	}
 }

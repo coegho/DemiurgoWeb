@@ -22,7 +22,7 @@
 					<summary>Witnesses</summary>
 						<span th:each="w : ${action.witnesses}" th:text="${w.user}">Some guy</span>
 				</details>
-				<p class="narration" th:utext="${action.narration}">Narration</p>
+				<div class="narration" th:utext="${action.narration}">Narration</div>
 			</div>
 		</div>
 	</main>

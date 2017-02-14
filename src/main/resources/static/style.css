@@ -1,17 +1,72 @@
+/*@font-face {
+    font-family: Gallaecia;
+    src: url(fonts/gallaecia.ttf);
+}*/
+
+@font-face {
+    font-family: "Fantaisie Artistique";
+    src: url(fonts/fantaisieartistique.ttf);
+}
+
+@font-face {
+    font-family: "Celtic Garamound";
+    src: url(fonts/celtic.ttf);
+}
+
+@font-face {
+    font-family: "Medieval Sharp";
+    src: url(fonts/medievalsharp.ttf);
+}
+
+@font-face {
+    font-family: Lohengrin;
+    src: url(fonts/lohengrin.ttf);
+}
+
+@font-face {
+    font-family: "DS Behrensschrift";
+    src: url(fonts/dsbehrensschrift.ttf);
+}
+
+@font-face {
+    font-family: "Black Chancery";
+    src: url(fonts/blackchancery.ttf);
+}
+
+
+
 header {
-	background-color: #8f5902;
-	border: groove black 4px;
+	background: url(images/banda.png);
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 100;
+	height: 55px;
+}
+
+header ul {
+	margin-top: 7px;
 }
 
 header li {
-	display: inline;
+	display: inline-block;
 	margin-right: 35px;
+}
+
+header img {
+	height: 28px;
+	vertical-align: text-bottom;
+}
+
+header a {
+	font-family: "Celtic Garamound";
 }
 
 header a:LINK, header a:VISITED {
 	text-decoration: none;
-	color: #2e3436;
+	color: #eeeeec;
 	font-weight: bold;
+	text-shadow: none;
 }
 
 header a:HOVER {
@@ -19,24 +74,36 @@ header a:HOVER {
 }
 
 body {
-	background-color: #e9b96e;
+	background: url(images/woodtexture7.jpg) #b06f2f;
 	margin: 0px;
 	font-family: Carlito, arial, sans;
 }
 
+
 a:LINK, a:VISITED {
 	text-decoration: none;
-	color: #180625;
+	color: #0000a0;
 	font-weight: bold;
+	font-size: 14pt;
+	text-shadow: -1px 1px white;
 }
 
 a:HOVER {
-	color: #555753;
+	color: #0000f0;
 }
 
 main {
-	margin: 25px;
-	color: #2e3436;
+	margin: 65px 20px 0px 20px;
+	color: #000000;
+	background: url(images/wood_2.jpg) rgba(200, 200, 200, 0.4);
+	border: inset 3px #37240f;
+	border-radius: 15px;
+	padding: 12px;
+}
+
+h1, h2, h3 {
+	font-family: "Medieval Sharp", Carlito, arial, sans;
+	text-shadow: 0px 0px 10px #ffffff;
 }
 
 /* GM PANEL */
@@ -60,11 +127,14 @@ select {
 	background-color: #362307;
 	padding: 5px 10px;
 	min-width: 75px;
+	overflow: hidden;
+	height: 20px;
 	color: #d3d7cf;
 	font-weight: bold;
 	float:left;
 	text-align: center;
 	margin: 2px 15px 2px 2px;
+	font-size: 11pt;
 }
 
 .varpanel div.var.selected {
@@ -75,7 +145,10 @@ select {
 
 
 .varpanel span.varname {
-	display: inline;
+	display: block;
+	max-width: 75px;
+	font-family: "Celtic Garamound";
+	font-size: 10pt;
 }
 
 .varpanel div.var:HOVER span.varname, .varpanel div.var.selected span.varname {
@@ -98,24 +171,38 @@ select {
 	display: inline;
 }
 
-.varpanel div.objvar {
-	background-color: #0e1027;
+.varpanel div.intvar {
+	background-color: #112d10;
 }
 
-div#objpanel {
-	margin-right:50px;
-	width: 500px;
+.varpanel div.floatvar {
+	background-color: #39034c;
+}
+
+.varpanel div.stringvar {
+	background-color: #590707;
+}
+
+.varpanel div.arrayvar {
+	background-color: #916502;
+}
+
+.varpanel div.objvar {
+	background-color: #130766;
+}
+
+div.objpanel {
 	border: solid black 2px;
 	border-radius: 10px;
-	background: #af7822;
+	background: url(images/wood-textures-high-quality-1.jpg) #af7822;
 	color: black;
 }
 
-#obj_img {
+.obj_img {
 	width:30%;
 }
 
-#obj_img img {
+.obj_img img {
 	width: 80%;
 	margin: 10px;
 	max-width: 200px;
@@ -123,14 +210,17 @@ div#objpanel {
 }
 
 div.data_container {
-	background-color: #af7822;
-	color: black;
+	background: url(images/copper_seamless.jpg) #c17d11;
+	
 	margin: 0 auto;
 	min-height: 150px;
-	max-height: 240px;
 	border: solid black 2px;
 	width: 500px;
 	clear:both;
+}
+
+div.data_container p {
+	color: #d3d7cf;
 }
 
 
@@ -138,34 +228,35 @@ div.data_container {
 	border-radius: 10px;
 	background-color: #180625;
 	padding: 5px 10px;
-	min-width: 250px;
+	width: 90%;
 	color: #d3d7cf;
 	text-align: left;
-	margin: 2px 15px 2px 2px;
+	margin: 2px 15px 5px 2px;
 	display: table;
+	z-index: 5;
 }
 
-.varpanel .mname {
+.varpanel .method span.metname {
+	display: inline-block;
+	width: 110px;
 	font-weight: bold;
 }
 
-.method .margs {
-	display: none;
+.varpanel .method input {
+	height: 25px;
+	width: 60px;
+	margin-left: 15px;
+	font-weight: bold;
+	background: #d3d7cf;
+	text-align: center;
 }
 
-.method:HOVER .margs {
-	display: inline;
-}
-
-.varpanel .margs {
-	font-style: italic;
-}
 
 .dropvalue {
 	display: none;
 }
 
-#selected_obj {
+.selected_obj {
 	width:70%;
 }
 
@@ -193,13 +284,21 @@ details.data_select {
 
 .obj {
 	text-decoration: none;
-	color: black;
+	color: #d3d7cf;
 	font-weight: bold;
-	padding: 5px;
+	padding: 2px;
 	margin: 5px 10px 5px 5px;
-	border: solid #2e3436 2px;
-	background-color: #9c6e32;
+	border: solid 3px #000000;
+	border-radius: 4px;
+	background: url(images/copper_seamless.jpg);
 	float: left;
+	cursor: pointer;
+	font-family: "DS Behrensschrift";
+}
+
+.obj img {
+	height: 20px;
+	vertical-align: text-bottom;
 }
 
 #inventorypanel .obj {
@@ -207,7 +306,14 @@ details.data_select {
 }
 
 .obj.selected {
-	background-color: #ddbd92;
+	background: #ddbd92 url(images/copper_2.jpg);
+	color: #000000;
+}
+
+#left_panel {
+	margin-top: 10px;
+	margin-right:50px;
+	width: 500px;
 }
 
 #right_panel {
@@ -221,7 +327,7 @@ details.data_select {
 	font-weight: bold;
 	font-size: 13pt;
 	font-family: monospace;
-	background-color: #d3d7cf;
+	background: url(images/marble_seamless.jpg) #d3d7cf;
 	border: groove gray 5px;
 }
 
@@ -233,15 +339,21 @@ details.data_select {
 	font-weight: bold;
 	font-size: 11pt;
 	font-family: monospace;
-	background-color: #7c9d3e;
+	background: #7c9d3e url("images/parchment_seamless.jpg");
 	border: groove #443908 5px;
 }
 
 label {
 	display: block;
-	font-family: fantasy;
-	font-size: 14pt;
+	font-family: "Fantaisie Artistique", fantasy;
+	font-size: 15pt;
 	margin-top:10px;
+	
+	text-shadow: 0px 0px 5px #ffffff;
+}
+
+label.newaction {
+	text-shadow: none;
 }
 
 .float {
@@ -256,32 +368,34 @@ h2 {
 /* HISTORY */
 
 #actions {
-	border: solid black 5px;
+	border: solid 4px #000000;
 }
 
 .action {
-	border: groove black 3px;
-	
+	border: double 5px #37240f;
 }
 
 .even {
-	background-color: #b1894b;
+	background: url(images/parchment_seamless.jpg);
 }
 
 .odd {
-	background-color: #cfa460;
+	background: url(images/parchment_seamless.jpg);
 }
 
 .narration {
 	font-size: 13pt;
 	color: black;
-	margin: 15px 10px;
+	margin: 15px;
+	padding: 15px;
+	font-family: "Black Chancery", Carlito, arial, sans;
 }
 
 .date {
-	font-size: 10pt;
+	font-size: 11pt;
 	font-style: italic;
-	color: #2e3436;
+	color: #101010;
+	font-weight: bold;
 }
 
 details.witnesses {
@@ -334,8 +448,12 @@ label.newaction + input {
 /* USER */
 
 textarea#decision {
-	width:100%;
+	width:95%;
 	height:150px;
+	font-family: Lohengrin, arial, sans;
+	font-size: 15pt;
+	background: url(images/papyrus_seamless.jpg);
+	border: solid 3px black;
 }
 
 .ui-draggable-handle {
@@ -344,6 +462,7 @@ textarea#decision {
 
 .ui-draggable-dragging {
 	cursor: grabbing;
+	opacity: 0.5;
 }
 
 h3, h4 {
@@ -361,52 +480,80 @@ details.comment summary {
 }
 
 
-.pendingrooms > div {
-	border: solid #362307 4px;
-	background: #ce953b;
+.rooms > div {
+	border: solid 4px #2e3436;
+	background: url(images/pavement_seamless.jpg) #babdb6;
 	border-radius: 20px 20px 0px 0px;
 }
 
-.pendingrooms p {
+.rooms p {
 	margin: 15px;
 	font-weight: bold;
 }
 
-.pendingrooms h2 {
+.rooms h2 {
 	background: #2e3436;
 	color: #eeeeec;
 	padding: 5px 15px;
 }
 
-.pendingrooms .decidingusers {
+.rooms .decidingusers {
 	padding: 0;
 	margin: 15px;
 }
 
-.pendingrooms .decidingusers li {
+.rooms .decidingusers li {
 	display: inline;
 	margin-right: 5px;
 	font-style: italic;
 }
 
+.userdata {
+	padding: 15px;
+	background: #abfd84;
+	border: solid 3px #397104;
+	border-radius: 8px;
+}
 
-#decisions  div.decision {
+.userdata p {
+	background: rgba(256, 256, 256, 0.3);
+	padding: 3px;
+	border-radius: 3px;
+}
+
+.decision {
 	float:left;
 	min-width: 300px;
 	max-width: 500px;
-	border: solid black 3px;
+	border: solid 3px #397104;
+	border-radius: 8px;
 	margin: 10px;
-	margin-radius: 10px;
 	color: black;
 	padding: 15px;
-	background: #babdb6;
+	background: /*url(images/malaquita.jpg)*/ #abfd84;
 }
 
-div.decision p {
-	background: #7c9d3e;
+.decision h3 {
+	color: #750020;
+}
+
+.decision p {
+	background: url(images/papyrus_seamless.jpg);
+	border: solid 2px black;
 	padding: 10px 5px;
 	margin: 5px 0;
 	font-style: italic;
+	font-family: Lohengrin, arial, sans;
+	font-size: 14pt;
+}
+
+.owndecision p {
+	font-style: italic;
+	font-family: Lohengrin,arial,sans;
+	font-size: 14pt;
+	background: url("images/papyrus_seamless.jpg");
+	border: inset 3px black;
+	padding: 15px;
 }
 
 details.roomselector {
@@ -444,10 +591,10 @@ ul#classes li {
 	padding: 15px;
 	border: solid black 3px;
 	border-radius: 15px;
+	background: url(images/copper.jpg);
 }
 
 #parentclass {
-	background: #d7b37c;
 	border: solid black 3px;
 	border-radius: 15px;
 }
@@ -467,7 +614,86 @@ ul#classes li {
 	display: inline;
 }
 
-.CodeMirror {
-	font-size: 14pt;
-	font-weight: bold;
+div.CodeMirror {
+	background: url(images/marble_seamless.jpg);
+	border: solid 3px black;
+}
+
+.ui-draggable {
+	z-index: 10;
+}
+
+input.token {
+	width: 100%;
+	display: block;
+	color: black;
+}
+
+.action p {
+	margin: 20px;
+}
+
+.action img {
+	max-width: 350px;
+	max-height: 350px;
+	margin: 20px;
+}
+
+.description {
+	font-style: italic;
+}
+
+div.remodal {
+	color: #2b2e38;
+	background: url(images/wood-textures-high-quality-1.jpg);
+	border-radius: 20px;
+	border: solid #362307 5px;
+}
+
+a.destroy {
+	color: #f00000;
+	font-size: 13pt;
+}
+
+#classes {
+	background: rgba(150, 150, 100, 0.5);
+	border: solid 3px black;
+}
+
+.lapels {
+	margin: 0px 5px;
+	width: 100%;
+}
+
+.lapels .lapel {
+	background: #af7822 url("images/wood-textures-high-quality-1.jpg");
+	text-align: center;
+	border: solid 2px black;
+	border-radius: 12px 0px 0px 0px;
+	overflow: hidden;
+}  
+
+.lapels .lapel a {
+	display: inline-block;
+	color: black;
+	font-size: 13pt;
+	padding: 3px 0px;
+	width: 50px;
+}
+
+.lapels .lapel.selected a {
+	background: rgba(50, 0, 0, 0.5);
+}
+
+.lapels .lapel:HOVER a {
+	background: rgba(100, 0, 0, 0.3);
+}
+
+.lapels .lapel.temporal a {
+	background: rgba(0, 0, 100, 0.5);
+}
+
+.room img {
+	height: 18px;
+	vertical-align: text-bottom;
 }

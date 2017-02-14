@@ -6,6 +6,7 @@
 </head>
 <body>
 	<main>
+		<h1>Demiurgo</h1>
 		<form action="#" th:action="@{/login}" th:object="${loginForm}"
 			method="post">
 			<label for="world">World:</label> <select th:field="*{world}">
@@ -13,9 +14,9 @@
 						th:text="${world}">World1</option>
 				</select>
 			<label for="username">User name:</label>
-			<input type="text" th:field="*{username}" />
+			<input type="text" th:field="*{username}" placeholder="Your user name" />
 			<label for="pass">Password:</label>
-			<input type="password" th:field="*{pass}" />
+			<input type="password" th:field="*{pass}" placeholder="Your password" />
 			<div>
 				<button type="submit">Login</button>
 				<a th:href="@{/register}">or Register</a>
@@ -24,6 +25,7 @@
 			<p th:if="${#fields.hasErrors('world')}" th:errors="*{world}">World error</p>
 			<p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</p>
 			<p th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}">Password error</p>
+			<p th:if="${autherror} !=null" th:text="${autherror}">Login error</p>
 			</div>
 		</form>
 	</main>

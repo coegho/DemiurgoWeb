@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,8 +40,10 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public String login(@Valid LoginForm form, HttpServletResponse response, BindingResult bindingResult) {
+	public String login(@Valid LoginForm form, HttpServletResponse response, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
+			WorldListResponse res = dc.doGet(null, "worlds", WorldListResponse.class);
+			model.addAttribute("worlds", res.getWorlds());
             return "login";
         }
 		
@@ -67,10 +68,12 @@ public class LoginController {
 		} catch (HttpClientErrorException ex) {
 			System.out.println(ex.getLocalizedMessage());
 			if (ex.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-				bindingResult.addError(new ObjectError("auth", "ERROR: Bad credentials"));
+				model.addAttribute("autherror", "ERROR: Bad credentials");
 			} else {
-				bindingResult.addError(new ObjectError("auth", "ERROR: Cannot connect with server"));
+				model.addAttribute("autherror", "ERROR: Cannot connect with server");
 			}
+			WorldListResponse res = dc.doGet(null, "worlds", WorldListResponse.class);
+			model.addAttribute("worlds", res.getWorlds());
 			return "login";
 		}
 	}

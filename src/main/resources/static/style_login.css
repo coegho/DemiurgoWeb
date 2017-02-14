@@ -1,15 +1,35 @@
+@font-face {
+    font-family: "Fantaisie Artistique";
+    src: url(fonts/fantaisieartistique.ttf);
+}
+
+@font-face {
+    font-family: "Celtic Garamound";
+    src: url(fonts/celtic.ttf);
+}
+
+@font-face {
+    font-family: Gallaecia;
+    src: url(fonts/gallaecia.ttf);
+}
+
 body {
-	background-color: #729fcf;
+	background: #000000 url(images/portico_gloria.jpg) repeat-y top;
 }
 
 main {
-	margin: auto;
+	margin: 0 auto;
 	margin-top: 20px;
-	padding: 50px;
+	padding: 20px 100px 50px;
 	width: 200px;
-	background-color: #ffd654;
-	border: solid #917e29 10px;
-	border-radius: 50px;
+	background-color: rgba(0,0,0,0.7);
+	border: solid 5px #f3f3f3;
+}
+
+h1 {
+	font-family: Gallaecia, serif;
+	color: #d3d7cf;
+	margin: 0 auto;
 }
 
 form {
@@ -19,29 +39,34 @@ form {
 label {
 	display: block;
 	font-weight: bold;
-	font-family: sans;
+	font-family: "Fantaisie Artistique", sans;
 	font-size: 16pt;
-	color: #5c3566;
+	color: #d3d7cf;
+	margin-top: 15px;
 }
 
 input, select {
 	margin: 5px 0px 20px;
 	font-size: 14pt;
-	width: 160px;
-	background-color: #d3d7cf;
-	color: black;
+	width: 200px;
+	background-color: black;
+	color: #d3d7cf;
+	font-family: "Celtic Garamound", sans;
 }
 
 button {
-	background-color: #2e3436;
+	background-color: #1e2426;
 	color: white;
 	font-size: 16pt;
 	font-weight: bold;
+	font-family: "Celtic Garamound", sans;
 }
 
 a {
 	text-decoration: none;
-	color: #204a87;
+	color: #ffffff;
 	font-weight: bold;
 	text-align: right;
+	font-family: "Fantaisie Artistique", sans;
+	font-size: 15pt;
 }

@@ -36,13 +36,19 @@ var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj
 		<div>
 		<details class="roomstatus">
 			<summary>See Room Status</summary>
-			<div id="objpanel">
-				<h2>Variables</h2>
-				<div id="variables" class="varpanel"></div>
+			<h2>Objects In The Room</h2>
+			<th:block th:replace="room :: roomobjects"></th:block>
+				
+			<h2>Variables</h2>
+				<div id="variables" class="varpanel">
+					<div th:each="var : ${room.variables}" class="var" th:classappend="${typecss.getCss(var.type)}">
+						<span class="varname" th:text="${var.name}"></span>
+						<span class="prev" th:text="${#strings.abbreviate(var.value,13)}"></span>
+						<span class="varval" th:text="${var.value}"></span>
+						<a class="var-close" th:href="@{/delvar(path=${room.longPath},var=${var.name})}">x</a>
+					</div>
+				</div>
 				<div style="clear: both;"></div>
-				<div th:replace="room :: roomobjects"></div>
-				<div style="clear: both;"></div>
-			</div>
 		</details>
 		
 			<p th:text="${action.date}" class="date"></p>

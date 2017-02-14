@@ -1,15 +1,13 @@
 package es.usc.rai.coego.martin.demiurgo.json;
 
-import java.util.List;
-
 public class AllClassesResponse {
-	private List<JsonClass> classes;
+	private ClassTree classes;
 	
-	public List<JsonClass> getClasses() {
+	public ClassTree getClasses() {
 		return classes;
 	}
 	
-	public void setClasses(List<JsonClass> classes) {
+	public void setClasses(ClassTree classes) {
 		this.classes = classes;
 	}
 }

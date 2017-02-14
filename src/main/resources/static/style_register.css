@@ -1,56 +1,84 @@
+@font-face {
+    font-family: "Fantaisie Artistique";
+    src: url(fonts/fantaisieartistique.ttf);
+}
+
+@font-face {
+    font-family: "Celtic Garamound";
+    src: url(fonts/celtic.ttf);
+}
+
+@font-face {
+    font-family: Gallaecia;
+    src: url(fonts/gallaecia.ttf);
+}
+
 body {
-	background-color: #729fcf;
+	background: #000000 url(images/Christoffel_Jacobsz._van_der_Lamen_-_A_soldier_playing_tric-a-trac_with_peasants_in_a_tavern.jpg) repeat-y top;
 }
 
 main {
-	margin: auto;
+	margin: 0 auto;
 	margin-top: 20px;
-	padding: 50px;
+	padding: 20px 100px 50px;
 	width: 400px;
-	background-color: #7c9d3e;
-	border: solid #443908 10px;
-	border-radius: 50px;
+	background-color: rgba(0,0,0,0.7);
+	border: solid 5px #f3f3f3;
+}
+
+h1 {
+	font-family: Gallaecia, serif;
+	color: #d3d7cf;
+	margin: 0 auto;
 }
 
 form {
 	margin: auto;
-	width: 250px;
 }
 
 label {
 	display: block;
 	font-weight: bold;
-	font-family: sans;
+	font-family: "Fantaisie Artistique", sans;
 	font-size: 16pt;
-	color: #720d0d;
+	color: #d3d7cf;
+	margin-top: 15px;
 }
 
 input, select {
 	margin: 5px 0px 20px;
 	font-size: 14pt;
-	width: 220px;
-	background-color: #d3d7cf;
-	color: black;
+	width: 300px;
+	background-color: black;
+	color: #d3d7cf;
+	font-family: "Celtic Garamound", sans;
 }
 
 button {
-	background-color: #2e3436;
+	background-color: #1e2426;
 	color: white;
 	font-size: 16pt;
 	font-weight: bold;
+	font-family: "Celtic Garamound", sans;
 }
 
 a {
 	text-decoration: none;
-	color: #204a87;
+	color: #ffffff;
 	font-weight: bold;
 	text-align: right;
-}
-
-h1 {
-	color: #2e3436;
+	font-family: "Fantaisie Artistique", sans;
+	font-size: 15pt;
 }
 
 p {
 	color: #720d0d;
+}
+
+.float {
+	float:left;
+}
+
+img {
+	max-height: 200px;
 }

@@ -8,19 +8,25 @@
 <body>
 	<header th:replace="fragments/header :: gm">Header</header>
 	<main>
-	<h2>Create new room</h2>
+	<h1>Create new room</h1>
 	<form action="#" method="POST" th:action="@{/createroom}"
 		th:object="${createRoomForm}">
 		<label for="path">Path:</label>
-		<input type="text" th:field="*{path}"/>
+		<input type="text" th:field="*{path}" placeholder="/full/room/path" />
 		<button type="submit">Create</button>
 	</form>
 	<h2>Check room</h2>
-	<div>
-		<p th:each="path : ${paths}">
-			<a th:text="${path}" th:href="@{/room(path=${path})}">/region1/city1</a>
-			<a th:remove="all">/region1/city1/inn</a> <a th:remove="all">/region1/road_city1_city2</a>
-		</p>
+	<div class="rooms">
+		<div th:each="path : ${paths}">
+			<h3 class="float" th:text="${path}">/region1/city1</h3><p class="float">
+			<a class="destroy" onclick="return confirm('Are you sure? All objects inside will be lost!')" th:href="@{/destroyroom(path=room.longPath)}">Destroy this room</a></p>
+			<div style="clear:both;"></div>
+			<p>
+				<a th:href="@{/room(path=${path})}">Go to Room Panel</a> |
+				<a th:href="@{/history(path=${path})}">See Room History</a>
+			</p>
+			
+		</div>
 	</div>
 	</main>
 </body>

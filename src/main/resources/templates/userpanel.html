@@ -9,17 +9,24 @@
 	<main>
 		<h1>Current Situation</h1>
 		<h2>Recent actions</h2>
+		<div id="arrows">
+			<a th:if="${prevpag} != null" th:href="@{/user(first=${prevpag},count=${countpag})}">⇦</a>
+			<a th:if="${postpag} != null" th:href="@{/user(first=${postpag},count=${countpag})}">⇨</a>
+		</div>
 		<div id="actions">
 		<div class="action" th:each="action : ${actions}"
 			th:classappend="${actionStat.odd}? 'odd' : 'even'">
-			<p th:utext="${action}">Narration</p>
+			<div class="narration" th:utext="${action}">Narration</div>
 		</div>
 		</div>
 		<div>
 		<div th:if="${current} != null">
-		<p>You have sent your decision and you are waiting for a GM to resolve it.</p>
-		<p>Current decision:</p>
-		<p th:text="${current}" class="decision">Decision text</p>
+			<p>You have sent your decision and you are waiting for a GM to resolve it.</p>
+			<h4>Current decision:</h4>
+			<div class="owndecision">
+				<p th:text="'&quot;'+${current}+'&quot;'">Decision text</p>
+			</div>
+			<p>Send a new decision to override the current one.</p>
 		</div>
 		<form  action="#" method="post" th:action="@{/user}"
 			th:object="${userPanelForm}">

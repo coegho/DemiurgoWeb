@@ -3,31 +3,46 @@
 <head>
 <title>Class Panel - DemiurgoWeb</title>
 <link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="tree.css" />
+
+<!-- jQuery -->
+<script src="lib/jquery/jquery-3.1.1.min.js"></script>
+
+<script src="tree.js"></script>
 </head>
 <body>
 	<header th:replace="fragments/header :: gm">Header</header>
 	<main>
 		<h1>Class Panel</h1>
 		<h3>Check class</h3>
-		<ul id="classes">
-			<li th:each="cl : ${classes}">
-				<a th:text="${cl.className}"
-					th:href="@{/class(name=${cl.className})}">character</a>
-			</li>
-			<li th:remove="all">
-				<a>building</a>
-			</li>
-			<li th:remove="all">
-				<a>furniture</a>
+		<div class="tree_wrapper">
+		<div id="classes" class="tree">
+		<button id="expandall">Expand all</button>
+		<button id="collapseall">Collapse all</button>
+		<ul>
+			<li>
+				<a th:text="${classes.className}"
+						th:href="@{/class(name=${classes.className})}">object</a>
+				<a href="#" class="expandclasses">▼</a>
+				<ul layout:fragment="children">
+					<li th:each="cl : ${classes.children}">
+						<a th:text="${cl.className}"
+							th:href="@{/class(name=${cl.className})}">character</a>
+							<a th:if="${!#lists.isEmpty(cl.children)}" href="#" class="expandclasses">▼</a>
+						<ul th:if="${!#lists.isEmpty(cl.children)}" layout:include="classes :: children" th:with="classes=${cl}"></ul>
+					</li>
+				</ul>
 			</li>
 		</ul>
+		</div>
+		</div>
 		<div style="clear:both;"></div>
 	
 		<h3>Create new class</h3>
 		<form action="#" method="GET" th:action="@{/createclass}"
 			th:object="${createClassForm}">
-			<label for="className">Class Name:</label> <input type="text"
-				th:field="*{className}" />
+			<label for="className">Class Name:</label>
+			<input type="text" th:field="*{className}" placeholder="Class name" />
 			<button type="submit">Create</button>
 			<p th:if="${#fields.hasErrors('className')}" th:errors="*{className}">Class
 				Name error</p>

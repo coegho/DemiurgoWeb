@@ -30,6 +30,7 @@ import es.usc.rai.coego.martin.demiurgo.json.NarrateActionRequest;
 import es.usc.rai.coego.martin.demiurgo.json.NarrateActionResponse;
 import es.usc.rai.coego.martin.demiurgo.web.beans.DemiurgoConnector;
 import es.usc.rai.coego.martin.demiurgo.web.beans.LoggedUser;
+import es.usc.rai.coego.martin.demiurgo.web.beans.VarTypeToCss;
 import es.usc.rai.coego.martin.demiurgo.web.forms.CreateRoomForm;
 import es.usc.rai.coego.martin.demiurgo.web.forms.NarrateActionForm;
 import es.usc.rai.coego.martin.demiurgo.web.forms.ProcessCodeForm;
@@ -42,25 +43,32 @@ public class RoomController {
 	@Autowired
 	DemiurgoConnector dc;
 	
+	@Autowired
+	VarTypeToCss typecss;
+
 	@ModelAttribute("user")
 	public LoggedUser getUser() {
 		return user;
 	}
 	
-	
+	@ModelAttribute("typecss")
+	public VarTypeToCss getTypeToCss() {
+		return typecss;
+	}
+
 	@GetMapping("/rooms")
 	public String seeAllRooms(CreateRoomForm createRoomForm, Model model) {
 		AllRoomPathsResponse res = dc.doGet(user.getToken(), "roompaths", AllRoomPathsResponse.class);
 		model.addAttribute("paths", res.getPaths());
 		return "seeallrooms";
 	}
-	
+
 	@PostMapping("createroom")
 	public String createRoom(@Valid CreateRoomForm createRoomForm) {
 		CreateRoomRequest req = new CreateRoomRequest();
 		req.setPath(createRoomForm.getPath());
 		JsonRoom r = dc.doPost(user.getToken(), "createroom", req, CreateRoomRequest.class, JsonRoom.class);
-		return "redirect:/room?path="+r.getLongPath();
+		return "redirect:/room?path=" + r.getLongPath();
 	}
 
 	@GetMapping("/room")
@@ -71,7 +79,7 @@ public class RoomController {
 		if (res.getUnpublishedAction() != null) {
 			// There is an unpublished action
 			ra.addFlashAttribute("action", res.getUnpublishedAction());
-			return "redirect:/narrate?id="+res.getUnpublishedAction().getId();
+			return "redirect:/narrate?id=" + res.getUnpublishedAction().getId();
 		}
 		// There are no actions
 		AllRoomPathsResponse res2 = dc.doGet(user.getToken(), "roompaths", AllRoomPathsResponse.class);
@@ -81,10 +89,13 @@ public class RoomController {
 	}
 
 	@PostMapping(path = "/room")
-	public String executeCode(@Valid ProcessCodeForm processCodeForm, BindingResult br, Model m) {
-		
+	public String executeCode(@ModelAttribute("processCodeForm") @Valid ProcessCodeForm processCodeForm, BindingResult br, Model model,
+			RedirectAttributes ra) {
+
 		if (br.hasErrors()) {
-			m.addAttribute("room", requestRoomData(processCodeForm.getPath()).getRoom());
+			model.addAttribute("room", requestRoomData(processCodeForm.getPath()).getRoom());
+			AllRoomPathsResponse res2 = dc.doGet(user.getToken(), "roompaths", AllRoomPathsResponse.class);
+			model.addAttribute("paths", res2.getPaths());
 			return "room";
 		}
 
@@ -96,30 +107,31 @@ public class RoomController {
 				ExecuteCodeResponse.class);
 
 		if (res.getStatus().isOk()) {
-			if(req.isCreateAction()) {
+			if (req.isCreateAction()) {
 				return "redirect:/narrate?id=" + res.getAction().getId();
-			}
-			else {
+			} else {
 				return "redirect:/room?path=" + req.getPath();
 			}
 		} else {
 			// There was errors in code
-			m.addAttribute("parseErrors", res.getStatus().getDescription());
-			m.addAttribute("room", requestRoomData(processCodeForm.getPath()).getRoom());
-			return "room";
+			ra.addFlashAttribute("parseErrors", res.getStatus().getDescription());
+			ra.addFlashAttribute("processCodeForm", processCodeForm);
+			// ra.addAttribute("room",
+			// requestRoomData(processCodeForm.getPath()).getRoom());
+			return "redirect:/room?path=" + processCodeForm.getPath();
 		}
 
 	}
-	
+
 	@GetMapping("/narrate")
 	public String getNarrationForm(@RequestParam("id") String id, NarrateActionForm narrateActionForm, Model model) {
 		LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("id", id);
 		JsonAction a = dc.doGet(user.getToken(), "action", params, JsonAction.class);
 		model.addAttribute("action", a);
-		
+
 		model.addAttribute("room", requestRoomData(a.getRoom()).getRoom());
-		
+
 		narrateActionForm.setNarration(a.getNarration());
 		narrateActionForm.setActionId(Long.parseLong(id));
 		return "narrate";
@@ -141,27 +153,27 @@ public class RoomController {
 		NarrateActionResponse res = dc.doPost(user.getToken(), "narrateaction", req, NarrateActionRequest.class,
 				NarrateActionResponse.class);
 
-		return "redirect:/history?path="+res.getAction().getRoom() + "#act" + res.getAction().getId();
+		return "redirect:/history?path=" + res.getAction().getRoom() + "#act" + res.getAction().getId();
 	}
-	
+
 	@GetMapping("delvar")
 	public String deleteVariable(@RequestParam("path") String path, @RequestParam("var") String var) {
 		DeleteVariableRequest req = new DeleteVariableRequest();
 		req.setPath(path);
 		req.setVarName(var);
 		dc.doPost(user.getToken(), "delvar", req, DeleteVariableRequest.class, DeleteVariableResponse.class);
-		return "redirect:/room?path="+path;
+		return "redirect:/room?path=" + path;
 	}
-	
+
 	@GetMapping("destroyobj")
 	public String destroyObject(@RequestParam("id") long id, @RequestParam("back") String back) {
 		DestroyObjectRequest req = new DestroyObjectRequest();
 		req.setObjId(id);
 		req.setDestroyContents(true);
 		dc.doPost(user.getToken(), "destroyobj", req, DestroyObjectRequest.class, DestroyObjectResponse.class);
-		return "redirect:" + back;
+		return "redirect:/" + back;
 	}
-	
+
 	@GetMapping("destroyroom")
 	public String destroyRoom(@RequestParam("path") String path) {
 		DestroyRoomRequest req = new DestroyRoomRequest();

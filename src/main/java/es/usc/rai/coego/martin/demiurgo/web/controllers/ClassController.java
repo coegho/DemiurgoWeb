@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.usc.rai.coego.martin.demiurgo.json.AllClassesResponse;
 import es.usc.rai.coego.martin.demiurgo.json.CreateClassRequest;
@@ -88,7 +89,7 @@ public class ClassController {
 	}
 
 	@PostMapping("/modifyclass")
-	public String modifyClass(@Valid CreateClassSecondForm createClassSecondForm, BindingResult br, Model model) {
+	public String modifyClass(@ModelAttribute("createClassSecondForm") @Valid CreateClassSecondForm createClassSecondForm, BindingResult br, Model model, RedirectAttributes ra) {
 		CreateClassRequest req = new CreateClassRequest();
 		req.setName(createClassSecondForm.getClassName());
 		req.setCode(createClassSecondForm.getCode());
@@ -97,13 +98,16 @@ public class ClassController {
 		if (res.getStatus().isOk()) {
 			return "redirect:/class?name=" + res.getCreatedClass().getClassName();
 		} else {
-			MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+			// There was errors in code
+			/*MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 			params.add("classname", createClassSecondForm.getClassName());
 			JsonClass res2 = dc.doGet(user.getToken(), "getclass", params, JsonClass.class);
-			model.addAttribute("cl", res2);
-
-			model.addAttribute("parseErrors", res.getStatus().getDescription());
-			return "class";
+			model.addAttribute("cl", res2);*/
+			ra.addFlashAttribute("parseErrors", res.getStatus().getDescription());
+			ra.addFlashAttribute("createClassSecondForm", createClassSecondForm);
+			
+			//model.addAttribute("parseErrors", res.getStatus().getDescription());
+			return "redirect:/class?name="+ createClassSecondForm.getClassName().toLowerCase();
 		}
 	}
 	

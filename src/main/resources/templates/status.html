@@ -3,23 +3,70 @@
 <head>
 <title th:text="'Status - DemiurgoWeb'">Status - DemiurgoWeb</title>
 <link rel="stylesheet" href="style.css" />
+
+<!-- jQuery -->
+<script src="lib/jquery/jquery-3.1.1.min.js"></script>
+
+<!-- Dialogs -->
+<link rel="stylesheet" href="lib/remodal/remodal.css" />
+<link rel="stylesheet" href="lib/remodal/remodal-default-theme.css" />
+<script src="lib/remodal/remodal.min.js"></script>
+
+<script src="status_functions.js"></script>
+
+<script th:inline="javascript">
+var invs = /*[[${obj.inventories}]]*/ {}; 
+</script>
 </head>
 <body>
+	<div th:fragment="remodal">
+		<div class="remodal" data-remodal-id="object" role="dialog">
+			<button data-remodal-action="close" class="remodal-close"></button>
+	 		<h1 id="inv_v_name">Object preview</h1>
+			<div class="data_container">
+				<div id="inv_selected_obj" class="float selected_obj">
+					<h1 id="inv_objname"></h1>
+					<p id="inv_description" class="description"></p>
+					<div id="inv_fields">
+					</div>
+				</div>
+				<div class="float obj_img" id="inv_obj_img"></div>
+				<div style="clear: both;"></div>
+			</div>
+		</div>
+	</div>
+	
 	<header th:replace="fragments/header :: user">Header</header>
-	<main>
+	<main class="remodal-bg">
 		<h1 th:text="Status">Status</h1>
 		<div id="status">
 			<div class="data_container">
-				<div id="selected_obj" class="float">
-					<p>INT ataque = '15'</p>
-					<p>STRING nome = 'guerreiro'</p>
-					<p>INT vida = '15'</p>
+				<div id="selected_obj" class="float selected_obj">
+					<h1 th:text="${obj.name}"></h1>
+					<p class="description" th:if="${obj.description}!=null" th:text="'&quot;'+${obj.description}+'&quot;'"></p>
+					<h3>Fields</h3>
+					<div id="fields">
+						<p th:each="v : ${obj.fields}">
+							<span th:text="${v.name}"></span>
+							<span>=</span>
+							<span th:text="${v.value}"></span>
+						</p>
+					</div>
 				</div>
-				<div class="float" id="obj_img">
-					<img th:if="${img_url} != null" th:src="${img_url}" />
+				<div class="float obj_img" id="obj_img">
+					<img class="float" th:if="${obj.imgUrl} != null" th:src="${obj.imgUrl}" />
 				</div>
 				<div style="clear: both;"></div>
 			</div>
+			<details th:each="i,invStat : ${obj.inventories}">
+				<summary th:text="${i.name}">Inventory</summary>
+				<div th:each="ob,objStat : ${i.objects}" th:id="'inv'+${invStat.index}+'-obj'+${objStat.index}" class="obj">
+					<img src="images/icons/requiario.png" />
+					<span th:text="'['+${objStat.index}+'] '"></span>
+					<span th:text="${ob.name}"></span>
+				</div>
+				<div style="clear:both;"></div>
+			</details>
 		</div>
 	</main>
 </body>

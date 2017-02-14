@@ -7,19 +7,18 @@
 <body>
 	<header th:replace="fragments/header :: ${user.role}">Header</header>
 	<main>
-		<h1>Account</h1>
-		<p>
-			User:
-			<th:block th:text="${user.name}">(Your name)</th:block>
-		</p>
-		<p>
-			World:
-			<th:block th:text="${user.world}">(World)</th:block>
-		</p>
-		<p>
-			Role:
-			<th:block th:text="${user.role}">(Role)</th:block>
-		</p>
+	<h1>Account</h1>
+	<div class="userdata">
+		<h3>User:</h3>
+		<p th:text="${user.name}">(Your name)</p>
+		<h3>World:</h3>
+		<p th:text="${user.world}">(World)</p>
+		<h3>Role:</h3>
+		<p th:text="${user.role}">(Role)</p>
+		<label for="token">Token:</label>
+		<input class="token" type="text" readOnly="readOnly" th:value="${user.token}" />
+	</div>
+		
 		<h2>Change password</h2>
 		<form action="#" method="POST" th:action="@{/changepasswd}" th:object="${changePasswordForm}">
 			<label for="pass">Old Password:</label>

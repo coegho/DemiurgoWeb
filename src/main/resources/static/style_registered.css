@@ -1,0 +1,89 @@
+@font-face {
+    font-family: "Fantaisie Artistique";
+    src: url(fonts/fantaisieartistique.ttf);
+}
+
+@font-face {
+    font-family: "Celtic Garamound";
+    src: url(fonts/celtic.ttf);
+}
+
+@font-face {
+    font-family: Gallaecia;
+    src: url(fonts/gallaecia.ttf);
+}
+
+body {
+	background: #000000 url(images/Saint_Michael_and_the_Dragon.jpg) top;
+}
+
+main {
+	margin: 0 auto;
+	margin-top: 20px;
+	padding: 20px 30px 50px;
+	width: 640px;
+	background-color: rgba(0,0,0,0.7);
+	border: solid 5px #f3f3f3;
+}
+
+h1 {
+	font-family: Gallaecia, serif;
+	color: #d3d7cf;
+	margin: 0 auto;
+	font-size: 18pt;
+}
+
+form {
+	margin: auto;
+}
+
+label {
+	display: block;
+	font-weight: bold;
+	font-family: "Fantaisie Artistique", sans;
+	font-size: 16pt;
+	color: #d3d7cf;
+	margin-top: 15px;
+}
+
+input, select {
+	margin: 5px 0px 20px;
+	font-size: 14pt;
+	width: 300px;
+	background-color: black;
+	color: #d3d7cf;
+	font-family: "Celtic Garamound", sans;
+}
+
+button {
+	background-color: #1e2426;
+	color: white;
+	font-size: 16pt;
+	font-weight: bold;
+	font-family: "Celtic Garamound", sans;
+}
+
+a {
+	text-decoration: none;
+	color: #ffffff;
+	font-weight: bold;
+	text-align: center;
+	font-family: "Fantaisie Artistique", sans;
+	font-size: 15pt;
+	display: block;
+	margin: 30px;
+}
+
+p {
+	color: #720d0d;
+}
+
+.float {
+	float:left;
+}
+
+img {
+	max-height: 200px;
+	margin: 0px 30px;
+	border: 4px solid black;
+}

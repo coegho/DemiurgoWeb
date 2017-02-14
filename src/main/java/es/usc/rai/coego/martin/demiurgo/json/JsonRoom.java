@@ -11,6 +11,7 @@ public class JsonRoom {
 	private List<JsonVariable> variables;
 	private List<JsonObject> objects;
 	private List<JsonUser> users;
+	private String prenarration;
 
 	public long getId() {
 		return id;
@@ -50,5 +51,13 @@ public class JsonRoom {
 	
 	public void setUsers(List<JsonUser> users) {
 		this.users = users;
+	}
+	
+	public String getPrenarration() {
+		return prenarration;
+	}
+	
+	public void setPrenarration(String prenarration) {
+		this.prenarration = prenarration;
 	}
 }

@@ -24,60 +24,104 @@
 <script src="code.js"></script>
 
 <script th:inline="javascript">
-var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj':{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0},'role':'user'}],'id':0,'longPath':'/region1/city1/inn','objects':[{'classname':'character','fields':[{'name':'name','type':'STRING','value':'bob'}],'id':0,'locationId':0, 'methods':[{'args':['friend'],'name':'greet','returnArg':'result'}]}],'variables':[{'name':'bob','type':'OBJECT/character','value':'#0'}]};
+var room = /*[[${room}]]*/ {'users':[],'id':0,'longPath':'/region1/city1/inn','objects':[],'variables':[]};
 </script>
 </head>
 <body>
-	<div  th:fragment="remodal">
+	<div th:fragment="remodal">
 		<div class="remodal" data-remodal-id="object" role="dialog">
-		  <button data-remodal-action="close" class="remodal-close"></button>
-		  <h1 id="v_name">Object preview</h1>
-		  <div class="data_container">
-				<div id="selected_obj" class="float">No object
-					selected</div>
-				<div class="float" id="obj_img"></div>
+			<button data-remodal-action="close" class="remodal-close"></button>
+			<h1 id="v_name">Object preview</h1>
+			<div class="data_container">
+				<div id="selected_obj" class="float selected_obj">
+					<h1 id="classname"></h1>
+					<h2 id="objid"></h2>
+					<p id="description" class="description"></p>
+					<div id="modal_fields">
+					</div>
+				</div>
+				<div class="float obj_img" id="obj_img"></div>
 				<div style="clear: both;"></div>
+				<a href="#" class="destroy">Destroy this object</a>
 			</div>
-			<a href="#">Destroy this object</a>
 		</div>
 	</div>
 	
 	<header th:replace="fragments/header :: gm">Header</header>
 	<main class="remodal-bg">
-		<h1 th:text="${room.longPath}">/region1/city1/inn</h1>
+		<h1 id="path" th:text="${room.longPath}">/region1/city1/inn</h1>
 		<a th:href="@{/history(path=${room.longPath})}">See room history</a>
 		<h2>Users and decisions</h2>
 		<div id="decisions">
 			<div class="decision" th:each="user : ${room.users}" th:id="'user-'+${user.name}">
-				<h2 class="float" th:text="${user.name}">user1</h2>
-				<div class='userobj'></div>
+				<div class="user">
+				<img class="float" src="images/icons/requila_user.png" />
+				<h3 class="float" th:text="${user.name}">user1</h3>
+				</div>
+				<div class='userobj'>
+					<div class="obj">
+						<img src="images/icons/requiario.png" />
+						<span th:text="${user.obj.name}">Object</span>
+						<span class="varname" th:text="' (#'+${user.obj.id}+')'"> (#0)</span>
+					</div>
+				</div>
 				<div style="clear:both;"></div>
-				<p th:if="${user.decision}!=null" th:text="${user.decision}">Text with a description of the
+				<p th:if="${user.decision}!=null" th:text="'&quot;'+${user.decision}+'&quot;'">Text with a description of the
 					action.</p>
 			</div>
 			<div style="clear:both;"></div>
 		</div>
+		<details th:if="${!#strings.isEmpty(room.prenarration)}">
+			<summary>Current output</summary>
+			<div class="prenarration"><pre th:text="${room.prenarration}">Prenarration</pre></div>
+		</details>
 	
-		<div class="float" id="objpanel">
-			<div th:fragment="roomobjects">
-				<h2>Objects</h2>
-				<div id="objects" class="data_select"></div>
-				<div style="clear:both;"></div>
-				<h3>Fields</h3>
-				<div id="fields" class="varpanel"></div>
-				<div style="clear: both;"></div>
-				<h3>Inventories</h3>
-				<div id="inventorypanel"></div>
+		<h2>Objects In The Room</h2>
+		<th:block th:fragment="roomobjects">
+		<div id="objects" class="data_select float">
+			<div th:each="obj : ${room.objects}" th:id="'obj'+${obj.id}" class="obj" th:title="${obj.classname}">
+				<img src="images/icons/requiario.png" />
+				<span th:text="${obj.name}">object</span>
+				<span th:text="'(#'+ ${obj.id} +')'" class="varname"> (#0)</span>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+		<div style="clear:both;"></div>
+		<div id="left_panel" class="float">
+			<div class="lapels">
+				<div class="lapel float" th:each="lapel : ${room.objects}" th:id="'lapel-'+${lapel.id}">
+					<a href="#" th:text="'#'+${lapel.id}"></a>
+				</div>
 				<div style="clear:both;"></div>
 			</div>
-			<h3>Methods</h3>
-			<div id="methods" class="varpanel"></div>
+			<div id="allobjpanels">
+				<div id="objpanel" class="objpanel">
+					<h2>Select An Object</h2>
+					<h3>Fields</h3>
+					<div class="fields varpanel"></div>
+					<div style="clear: both;"></div>
+					<h3>Inventories</h3>
+					<div class="inventorypanel"></div>
+					<div style="clear:both;"></div>
+					<h3>Methods</h3>
+					<div class="methods varpanel"></div>
+				</div>
+			</div>
 		</div>
+		</th:block>
 
 		<div class="float" id="right_panel">
 			<h2>Variables</h2>
-			<div id="variables" class="varpanel"></div>
-			<div style="clear: both;"></div>
+			<div id="variables" class="varpanel">
+				<div th:title="${var.type}" th:each="var : ${room.variables}" class="var" th:classappend="${typecss.getCss(var.type)}">
+					<span class="varname" th:text="${var.name}"></span>
+					<span class="prev" th:text="${#strings.abbreviate(var.value,10)}"></span>
+					<span class="varval" th:text="${var.value}"></span>
+					<a class="var-close" th:href="@{/delvar(path=${room.longPath},var=${var.name})}">x</a>
+				</div>
+				<div style="clear: both;"></div>
+			</div>
+			
 
 			<form action="#" method="post" th:action="@{/room}"
 				th:object="${processCodeForm}">
@@ -96,7 +140,10 @@ var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj
 			<details class="roomselector">
 				<summary>See Rooms</summary>
 				<div class="selectroom">
-					<div th:each="p : ${paths}" th:text="${p}" th:class="(${p}==${room.longPath})?'thislocation':''">/region1/city1/inn</div>
+					<div th:each="p : ${paths}" class="room" th:classappend="(${p}==${room.longPath})?'thislocation':''">
+						<img src="images/icons/cabana.png" />
+						<span th:text="${p}">/region1/city1/inn</span>
+					</div>
 				</div>
 			</details>
 		</div>

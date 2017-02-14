@@ -2,19 +2,19 @@ CodeMirror.defineSimpleMode("coe", {
   // The start state contains the rules that are intially used
   start: [
     // The regex matches the token, the token property contains the type
-    {regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: "string"},
+    {regex: /"(?:[^\\]|\\.)*?(?:"|$)/i, token: "string"},
     // You can match multiple tokens at once. Note that the captured
     // groups must span the whole string in this case
-    {regex: /(function)(\s+)([a-z$][\w$]*)/,
+    {regex: /(function)(\s+)([a-z$][\w$]*)/i,
      token: ["keyword", null, "variable-2"]},
     // Rules are matched in the order in which they appear, so there is
     // no ambiguity between this one and the one above
-    {regex: /(?:function|var|return|if|for|while|else|do|this)\b/,
+    {regex: /(?:function|var|return|if|for|while|else|do|this)\b/i,
      token: "keyword"},
-    {regex: /true|false|null|undefined/, token: "atom"},
-    {regex: /int|str|float|%/, token: "keyword"},
+    {regex: /true|false|null|undefined/i, token: "atom"},
+    {regex: /int|str|float|%/i, token: "keyword"},
     {regex: /#\d+/, token: "variable-2"},
-    {regex: /@\/([\w\d_])+(?:\/(?:[\w\d_])+)*/, token: "variable-3"},
+    {regex: /@\/([\w\d_])+(?:\/(?:[\w\d_])+)*/i, token: "variable-3"},
     {regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
      token: "number"},
     {regex: /\/\/.*/, token: "comment"},
@@ -25,7 +25,8 @@ CodeMirror.defineSimpleMode("coe", {
     // indent and dedent properties guide autoindentation
     {regex: /[\{\[\(]/, indent: true},
     {regex: /[\}\]\)]/, dedent: true},
-    {regex: /[a-z$][\w$]*/, token: "variable"},
+    {regex: /[a-z][\w]*/i, token: "variable"},
+    {regex: /\$[a-z][\w]*/i, token: "variable"},
     // You can embed other modes with the mode property. This rule
     // causes all code between << and >> to be highlighted with the XML
     // mode.
@@ -50,14 +51,17 @@ CodeMirror.defineSimpleMode("coe", {
 
 var myCodeMirror;
 $("#code").ready(function() {
-	myCodeMirror= CodeMirror.fromTextArea($("#code")[0], {theme: "material",
+	myCodeMirror= CodeMirror.fromTextArea($("#code")[0], {theme: "default",
 													      lineNumbers: true,
+															lineWrapping: true,
 													      mode: "coe"});
 	$(myCodeMirror.getWrapperElement()).droppable({
+		tolerance: "pointer",
 		drop : function(event, ui) {
 			myCodeMirror.replaceRange(
-					$(ui.draggable).data("dropvalue") + " ",
-					myCodeMirror.getCursor());
+					" " +$(ui.draggable).data("dropvalue") + " ",
+					//myCodeMirror.getCursor());
+					myCodeMirror.coordsChar({"left":event.pageX, "top":event.pageY}));
 			myCodeMirror.focus();
 		}
 })});

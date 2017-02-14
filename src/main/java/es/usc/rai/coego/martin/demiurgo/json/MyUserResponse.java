@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class MyUserResponse {
 	protected ResponseStatus status;
 	protected JsonUser user;
+	protected StatusObject obj;
 	protected String world;
 	
 	public ResponseStatus getStatus() {
@@ -26,5 +27,13 @@ public class MyUserResponse {
 	}
 	public void setWorld(String world) {
 		this.world = world;
+	}
+	
+	public StatusObject getObj() {
+		return obj;
+	}
+	
+	public void setObj(StatusObject obj) {
+		this.obj = obj;
 	}
 }

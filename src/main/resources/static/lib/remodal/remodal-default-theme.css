@@ -61,9 +61,7 @@
   transform: translate3d(0, 0, 0);
 
   color: #2b2e38;
-  background: #e9b96e;
-  border-radius: 20px;
-  border: solid #362307 5px;
+  background: #fff;
 }
 
 .remodal.remodal-is-opening,

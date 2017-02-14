@@ -6,6 +6,7 @@
 </head>
 <body>
 	<main>
+		<h1>Register</h1>
 		<form action="#" th:action="@{/register}" th:object="${registerForm}"
 			method="post">
 			<div>
@@ -15,16 +16,16 @@
 				</select>
 			</div>
 			<div>
-				<label for="username">User name:</label> <input type="text"
-					th:field="*{username}" />
+				<label for="username">User name:</label>
+				<input type="text" th:field="*{username}" placeholder="Your user name" />
 			</div>
 			<div>
-				<label for="mail">Mail address:</label> <input type="email"
-					th:field="*{mail}" />
+				<label for="mail">Mail address:</label>
+				<input type="email" th:field="*{mail}" placeholder="Your email address" />
 			</div>
 			<div>
-				<label for="pass">Password:</label> <input type="password"
-					th:field="*{pass}" />
+				<label for="pass">Password:</label>
+				<input type="password" th:field="*{pass}" placeholder="Your password" />
 			</div>
 			<div>
 				<button type="submit">Register</button>

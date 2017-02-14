@@ -22,15 +22,15 @@
 	<header th:replace="fragments/header :: gm">Header</header>
 	<main>
 		<div class="showclass float">
-			<a id="destroy" th:href="@{/destroyclass(classname=${cl.className})}">Destroy this class</a>
+			<a id="destroy" class="destroy" th:href="@{/destroyclass(classname=${cl.className})}">Destroy this class</a>
 			<h1 th:text="'Class: ' + ${cl.className}">Class: character</h1>
 			<h4 th:if="${cl.parent}!=null">Inherits from <a th:href="@{/class(name=${cl.parent.className})}" th:text="${cl.parent.className}">object</a></h4>
 			<h3>Current Fields:</h3>
 			<div id="fields" class="varpanel">
 				<div class="var" th:each="v : ${cl.fields}">
 					<span class="varname" th:text="${v.name}">var</span>
-					<span class="prev" th:text="${#strings.abbreviate(v.value,13)}">'15'</span>
-					<span class="varval" th:text="${v.value}">'15'</span>
+					<span class="prev" th:text="'\''+${#strings.abbreviate(v.type,13)}+'\''">INT</span>
+					<span class="varval" th:text="'\''+${v.type}+'\''">INT</span>
 				</div>
 				<div style="clear:both;"></div>
 			</div>
@@ -63,8 +63,8 @@
 				<div id="fields" class="varpanel">
 					<div class="var" th:each="v : ${parent.fields}">
 						<span class="varname" th:text="${v.name}">var</span>
-						<span class="prev" th:text="${v.value}">'15'</span>
-						<span class="varval" th:text="${v.value}">'15'</span>
+						<span class="prev" th:text="'\''+${#strings.abbreviate(v.type,13)}+'\''">INT</span>
+					<span class="varval" th:text="'\''+${v.type}+'\''">INT</span>
 					</div>
 					<div style="clear:both;"></div>
 				</div>
@@ -77,10 +77,11 @@
 					</div>
 				</div>
 				<h3>Code:</h3>
-				<textarea class="code" disabled="true" rows="20" cols="50" th:text="${parent.code}"></textarea>
+				<textarea class="code" readonly="readOnly" rows="20" cols="50" th:text="${parent.code}"></textarea>
 			</div>
 			<div style="clear:both;"></div>
 		</details>
+		<div style="clear:both;"></div>
 	</main>
 </body>
 </html>
