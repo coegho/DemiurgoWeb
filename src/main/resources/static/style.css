@@ -40,7 +40,7 @@ header {
 	position: fixed;
 	top: 0;
 	width: 100%;
-	z-index: 100;
+	z-index: 70;
 	height: 55px;
 }
 
@@ -73,6 +73,11 @@ header a:HOVER {
 	color: #555753;
 }
 
+header+div {
+	height: 55px;
+	width: 100%;
+}
+
 body {
 	background: url(images/woodtexture7.jpg) #b06f2f;
 	margin: 0px;
@@ -93,7 +98,7 @@ a:HOVER {
 }
 
 main {
-	margin: 65px 20px 0px 20px;
+	margin: 10px 20px 0px 20px;
 	color: #000000;
 	background: url(images/wood_2.jpg) rgba(200, 200, 200, 0.4);
 	border: inset 3px #37240f;
@@ -122,7 +127,8 @@ select {
 	min-width: 500px;
 }
 
-.varpanel div.var {
+div.var {
+	display: inline-block;
 	border-radius: 25px;
 	background-color: #362307;
 	padding: 5px 10px;
@@ -131,64 +137,68 @@ select {
 	height: 20px;
 	color: #d3d7cf;
 	font-weight: bold;
-	float:left;
+	/*float:left;*/
 	text-align: center;
 	margin: 2px 15px 2px 2px;
 	font-size: 11pt;
 }
 
-.varpanel div.var.selected {
+div.var.selected {
 	border: solid white 2px;
 	margin: 0px 13px 0px 0px;
 	color: white;
 }
 
 
-.varpanel span.varname {
+div.var span.varname {
 	display: block;
 	max-width: 75px;
 	font-family: "Celtic Garamound";
 	font-size: 10pt;
 }
 
-.varpanel div.var:HOVER span.varname, .varpanel div.var.selected span.varname {
+div.var:HOVER span.varname, div.var.selected span.varname {
 	display: none;
 }
 
-.varpanel span.varval, .varpanel span.prev {
+div.var span.varval, div.var span.prev {
 	display: none;
 }
 
-.varpanel div.var:HOVER span.prev {
+div.var:HOVER span.prev {
 	display:inline;
 }
 
-.varpanel div.var.selected span.prev {
+div.var.selected span.prev {
 	display:none;
 }
 
-.varpanel div.var.selected span.varval {
+div.var.selected span.varval {
 	display: inline;
 }
 
-.varpanel div.intvar {
+div.var.intvar {
 	background-color: #112d10;
 }
 
-.varpanel div.floatvar {
+div.var.floatvar {
 	background-color: #39034c;
 }
 
-.varpanel div.stringvar {
+div.var.stringvar {
 	background-color: #590707;
 }
 
-.varpanel div.arrayvar {
+div.var.arrayvar {
 	background-color: #916502;
 }
 
-.varpanel div.objvar {
+div.var.objvar {
 	background-color: #130766;
+}
+
+.inventory {
+	background: rgba(0, 0, 0, 0.25);
 }
 
 div.objpanel {
@@ -196,6 +206,7 @@ div.objpanel {
 	border-radius: 10px;
 	background: url(images/wood-textures-high-quality-1.jpg) #af7822;
 	color: black;
+	padding: 10px 15px;
 }
 
 .obj_img {
@@ -416,6 +427,10 @@ summary {
 	margin: 5px 0px;
 }
 
+.prenarration p {
+	white-space: pre-wrap;
+}
+
 details.roomstatus summary {
 	font-size: 14pt;
 	font-weight: bold;
@@ -545,6 +560,7 @@ details.comment summary {
 	font-style: italic;
 	font-family: Lohengrin, arial, sans;
 	font-size: 14pt;
+	white-space: pre-wrap;
 }
 
 .owndecision p {
@@ -554,6 +570,7 @@ details.comment summary {
 	background: url("images/papyrus_seamless.jpg");
 	border: inset 3px black;
 	padding: 15px;
+	white-space: pre-wrap;
 }
 
 details.roomselector {

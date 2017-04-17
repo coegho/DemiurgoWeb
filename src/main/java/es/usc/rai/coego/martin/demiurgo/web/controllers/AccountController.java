@@ -33,18 +33,18 @@ public class AccountController {
 	@GetMapping("/account")
 	public String seeAccountForm(@RequestParam(value = "chngd", defaultValue = "") String passwdChanged,
 			ChangePasswordForm changePasswordForm, Model model) {
-		if(passwdChanged.equals("1")) {
+		if (passwdChanged.equals("1")) {
 			model.addAttribute("chngd", true);
-		}
-		else if(passwdChanged.equals("0")) {
+		} else if (passwdChanged.equals("0")) {
 			model.addAttribute("chngd", false);
 		}
 		return "account";
+
 	}
 
 	@PostMapping("/changepasswd")
 	public String changePassword(@Valid ChangePasswordForm changePasswordForm, BindingResult br) {
-		if(br.hasErrors()) {
+		if (br.hasErrors()) {
 			return "account";
 		}
 		ChangePasswordRequest req = new ChangePasswordRequest();
@@ -53,7 +53,7 @@ public class AccountController {
 		req.setNewPassword(changePasswordForm.getNewPassword());
 		ResponseStatus res = dc.doPost(user.getToken(), "changepasswd", req, ChangePasswordRequest.class,
 				ResponseStatus.class);
-		
-		return "redirect:/account?chngd="+((res.isOk()?1:0));
+
+		return "redirect:/account?chngd=" + ((res.isOk() ? 1 : 0));
 	}
 }

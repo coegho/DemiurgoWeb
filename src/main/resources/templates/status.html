@@ -15,7 +15,7 @@
 <script src="status_functions.js"></script>
 
 <script th:inline="javascript">
-var invs = /*[[${obj.inventories}]]*/ {}; 
+var invs = /*[[${(obj!=null)?obj.inventories:null}]]*/ {}; 
 </script>
 </head>
 <body>
@@ -39,7 +39,7 @@ var invs = /*[[${obj.inventories}]]*/ {};
 	<header th:replace="fragments/header :: user">Header</header>
 	<main class="remodal-bg">
 		<h1 th:text="Status">Status</h1>
-		<div id="status">
+		<div id="status" th:if="${obj} != null">
 			<div class="data_container">
 				<div id="selected_obj" class="float selected_obj">
 					<h1 th:text="${obj.name}"></h1>
@@ -68,6 +68,7 @@ var invs = /*[[${obj.inventories}]]*/ {};
 				<div style="clear:both;"></div>
 			</details>
 		</div>
+		<div th:if="${obj} == null">No character assigned.</div>
 	</main>
 </body>
 </html>

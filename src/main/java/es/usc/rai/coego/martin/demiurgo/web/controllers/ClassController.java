@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
@@ -46,7 +47,7 @@ public class ClassController {
 	}
 
 	@GetMapping("/class")
-	public String seeClass(@RequestParam("name") String name, CreateClassSecondForm createClassSecondForm, Model model) {
+	public String seeClass(@RequestParam("name") String name, CreateClassSecondForm createClassSecondForm, ModelMap model) {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		params.add("classname", name);
 		JsonClass res = dc.doGet(user.getToken(), "getclass", params, JsonClass.class);
@@ -58,8 +59,15 @@ public class ClassController {
 			JsonClass parent = dc.doGet(user.getToken(), "getclass", params2, JsonClass.class);
 			model.addAttribute("parent", parent);
 		}
+
 		createClassSecondForm.setClassName(res.getClassName());
-		createClassSecondForm.setCode(res.getCode());
+		if(!model.containsAttribute("badCode")) {
+			//This is not a redirection
+			createClassSecondForm.setCode(res.getCode());
+		}
+		else {
+			createClassSecondForm.setCode((String) model.get("badCode"));
+		}
 		return "class";
 	}
 
@@ -98,15 +106,9 @@ public class ClassController {
 		if (res.getStatus().isOk()) {
 			return "redirect:/class?name=" + res.getCreatedClass().getClassName();
 		} else {
-			// There was errors in code
-			/*MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-			params.add("classname", createClassSecondForm.getClassName());
-			JsonClass res2 = dc.doGet(user.getToken(), "getclass", params, JsonClass.class);
-			model.addAttribute("cl", res2);*/
 			ra.addFlashAttribute("parseErrors", res.getStatus().getDescription());
-			ra.addFlashAttribute("createClassSecondForm", createClassSecondForm);
+			ra.addFlashAttribute("badCode", createClassSecondForm.getCode());
 			
-			//model.addAttribute("parseErrors", res.getStatus().getDescription());
 			return "redirect:/class?name="+ createClassSecondForm.getClassName().toLowerCase();
 		}
 	}

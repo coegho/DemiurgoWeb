@@ -54,7 +54,7 @@ var room = /*[[${room}]]*/ {'users':[{'decision':'Some text','name':'bob90','obj
 			<p th:text="${action.date}" class="date"></p>
 			<h2>Narration</h2>
 			<div class="prenarration">
-				<pre th:text="${action.narration}"></pre>
+				<p th:text="${action.narration}"></p>
 			</div>
 			<details th:if="${not #lists.isEmpty(action.witnesses)}">
 				<summary>Witnesses and decisions</summary>

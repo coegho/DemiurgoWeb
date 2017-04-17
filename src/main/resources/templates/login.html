@@ -3,11 +3,12 @@
 <head>
 <title>Demiurgo Web - Login</title>
 <link rel="stylesheet" href="style_login.css" />
+
 </head>
 <body>
 	<main>
 		<h1>Demiurgo</h1>
-		<form action="#" th:action="@{/login}" th:object="${loginForm}"
+		<form id="loginform" action="#" th:action="@{/login}" th:object="${loginForm}"
 			method="post">
 			<label for="world">World:</label> <select th:field="*{world}">
 					<option th:each="world : ${worlds}" th:value="${world}"

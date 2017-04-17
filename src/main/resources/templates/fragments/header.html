@@ -4,10 +4,22 @@
 <body>
 	<header th:fragment="user">
 		<ul>
-			<li><a href="#" th:href="@{/user}">Home</a></li>
-			<li><a href="#" th:href="@{/status}">My Status</a></li>
-			<li><a href="#" th:text="${user.name}" th:href="@{/account}">Profile</a></li>
-			<li><a href="#" th:href="@{/logout}">Logout</a></li>
+			<li>
+				<img src="images/icons/demiurgo.png" />
+				<a href="#" th:href="@{/user}">Home</a>
+			</li>
+			<li>
+				<img src="images/icons/requiario.png" />
+				<a href="#" th:href="@{/status}">My Status</a>
+			</li>
+			<li>
+				<img src="images/icons/requila_user.png" />
+				<a href="#" th:text="${user.name}" th:href="@{/account}">Profile</a>
+			</li>
+			<li>
+				<img src="images/icons/sinal.png" />
+				<a id="logout" href="#" th:href="@{/logout}">Logout</a>
+			</li>
 		</ul>
 	</header>
 	<header th:fragment="gm">
@@ -30,7 +42,7 @@
 			</li>
 			<li>
 				<img src="images/icons/sinal.png" />
-				<a href="#" th:href="@{/logout}">Logout</a>
+				<a id="logout" href="#" th:href="@{/logout}">Logout</a>
 			</li>
 		</ul>
 	</header>

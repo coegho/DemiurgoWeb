@@ -9,7 +9,8 @@ $("decisions").ready(
 						.data("dropvalue", "#"+u.obj.id)
 						.draggable({
 							revert : true
-						});
+						})
+						.dblclick(function() {loadObjModal(u.obj)});
 						$("#user-"+u.name+" .user").draggable({revert : true})
 						.data("dropvalue", "$"+u.name)
 					});
@@ -33,7 +34,7 @@ function vardelwarning() {
 
 /* OBJECTS */
 var noobj;
-var selectedId = -1;
+var selectedItem = undefined;
 
 $("#selected_obj").ready(function() {
 	noobj = $("#selected_obj").html();
@@ -60,15 +61,15 @@ $(".lapels").ready(function() {
 		tolerance : "pointer",
 		accept: ".obj",
 		drop : function(event, ui){
-			selectObject($(ui.draggable).data("obj").id);
+			selectObject($(ui.draggable).data("obj"));
 		}
 	});
 	
 	room.objects.forEach(function(item, index) {
 		$("#lapel-"+item.id)
-			.click(function() { selectObject(item.id); return false } )
-			.hover(function(){ showObject(item.id)},
-					function() { showObject(selectedId); })
+			.click(function() { selectObject(item); return false } )
+			.hover(function(){ showObject(item)},
+					function() { showObject(selectedItem); })
 	});
 });
 
@@ -84,24 +85,6 @@ $("#code").ready(function() {
 });
 
 
-/*function makeObject(item) {
-	return jQuery("<div/>", {
-		class : "obj",
-		})
-	.data("obj", item)
-	.data("dropvalue", "#"+item.id)
-	.append("<span>" + v_name(item) + "</span>")
-	.append("<span class='varname'> (#" + item.id + ")</span>")
-	.hover(function() { showObject(item.id) },
-		   function() { showObject(selectedId); })
-	.click(function() {
-		selectObject(item.id)})
-	.dblclick(function() { loadObjModal(item) })
-	.draggable({
-		revert : true
-	});
-}*/
-
 function v_name(item) {
 	var v_name = item.classname;
 	item.fields.forEach(function(f, i) {
@@ -112,25 +95,26 @@ function v_name(item) {
 	return v_name;
 }
 
-function makeVariable(v) {
-	return jQuery("<div />").addClass("var " +getTypeCss(v.type))
-			.attr("title", v.type)
+function makeVariable(name, type, value) {
+	return jQuery("<div />").addClass("var " +getTypeCss(type))
+			.attr("title", type)
 			.append(
-					jQuery("<span />").text(v.name).addClass(
+					jQuery("<span />").text(name).addClass(
 							"varname"),
 					jQuery("<span />").text(
-							((v.value.length > 10)?v.value.substring(0,7)+"...":v.value)).addClass(
+							((value.length > 10)?value.substring(0,7)+"...":value)).addClass(
 							"prev"),
-					jQuery("<span />").text(v.value)
+					jQuery("<span />").text(value)
 							.addClass("varval")).dblclick(function() {
 				$(this).toggleClass("selected")
 				
 			}).draggable({ revert : true });
 }
 
-function selectObject(id) {
-	showObject(id);
-	selectedId = id;
+function selectObject(item) {
+	id = item.id;
+	showObject(item);
+	selectedItem = item;
 	$(".obj.selected").removeClass("selected");
 	$(".lapel.selected").removeClass("selected");
 	$(".lapel.temporal").remove();
@@ -171,18 +155,19 @@ function loadObjModal(item) {
 		$("#modal_fields")
 		.append("<p>"+ f.type + " " + f.name+ " = "+ f.value+ "</p>");
 	});
-	$(".remodal a").attr("href", "destroyobj?id="+item.id+"&back=room?path="+ $("#path").text());
+	$(".remodal a")//.attr("href", "destroyobj?id="+item.id+"&back=room?path="+ $("#path").text());
+	.data("dropvalue", "#"+item.id);
 	location.hash = "#object";
 }
 
-function showObject(id) {
-	if($("#objpanel").data("showing") != id) {
-
-		$(".objpanel").hide();
-		//showing
-		if(id == -1) {
-			$("#objpanel").show();
-		} else if($("#objpanel-"+id).length) {
+function showObject(item) {
+	$(".objpanel").hide();
+	//showing
+	if(item === undefined) {
+		$("#objpanel").show();
+	} else {
+		var id = item.id;
+		if($("#objpanel-"+id).length) {
 			$("#objpanel-"+id).show();
 			
 		}else {
@@ -192,11 +177,11 @@ function showObject(id) {
 					.addClass("objpanel")
 					.html($("#objpanel").html()));
 			
-			var item = $("#obj"+id).data("obj");
+			//var item = $("#obj"+id).data("obj");
 			$("#objpanel-"+id+ " h2").text(item.name + " ("+item.classname+")");
 			item.fields.forEach(function(f, i) {
 				$("#objpanel-"+id+ " .fields")
-					.append(makeVariable(f).data("dropvalue", "#"+item.id+"."+f.name));
+					.append(makeVariable(f.name, f.type, f.value).data("dropvalue", "#"+item.id+"."+f.name));
 			});
 			
 			item.methods.forEach(function (m, i) {
@@ -214,8 +199,11 @@ function showObject(id) {
 			item.inventories.forEach(function(inventory, i) {
 				$("#objpanel-"+id+ " .inventorypanel").append(
 						jQuery("<div />",
-								{"class": "inv-"+inventory.name+" data_select"})
-						 .append("<h4>"+inventory.name+"</h4>"));
+								{"class": "inv-"+inventory.name+" data_select inventory"})
+						 .append(jQuery("<h4/>")
+								 .append(makeVariable(inventory.name, "INVENTORY", "%")
+										 .data("dropvalue", "#"+item.id+"."+inventory.name)))
+						 );
 				inventory.objects.forEach(function(item, index) {
 					jQuery("<div/>", {
 						id : "obj" + item.id,
@@ -235,9 +223,8 @@ function showObject(id) {
 				$("#objpanel-"+id+ " .inv-"+inventory.name).append("<div style='clear:both;'></div>");
 			});
 			
-			
 		}
-	}
+		}
 }
 
 
@@ -261,7 +248,15 @@ function makeMethod(m) {
 }
 
 $(".remodal a").ready(function() {
-	$(".remodal a").click(function() { return confirm("Are you sure you want to destroy this object?")});
+	//$(".remodal a").click(function() { return confirm("Are you sure you want to destroy this object?")});
+	$(".remodal a").click(function() {
+		myCodeMirror.setValue(myCodeMirror.getValue()+
+				"\n destroy("+$(this).data("dropvalue") + ") "
+				);
+		myCodeMirror.focus();
+		return true;
+	});
+
 });
 
 function getTypeCss(type) {

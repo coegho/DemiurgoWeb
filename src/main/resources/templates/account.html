@@ -16,7 +16,8 @@
 		<h3>Role:</h3>
 		<p th:text="${user.role}">(Role)</p>
 		<label for="token">Token:</label>
-		<input class="token" type="text" readOnly="readOnly" th:value="${user.token}" />
+		<input id="token" class="token" type="text" readOnly="readOnly" th:value="${user.token}" />
+		<a th:href="@{https://www.demiurgo.pro:88(token=${user.token})}" target="_blank">Connect with Telegram</a>
 	</div>
 		
 		<h2>Change password</h2>

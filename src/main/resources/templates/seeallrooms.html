@@ -19,7 +19,7 @@
 	<div class="rooms">
 		<div th:each="path : ${paths}">
 			<h3 class="float" th:text="${path}">/region1/city1</h3><p class="float">
-			<a class="destroy" onclick="return confirm('Are you sure? All objects inside will be lost!')" th:href="@{/destroyroom(path=room.longPath)}">Destroy this room</a></p>
+			<a class="destroy" onclick="return confirm('Are you sure? All objects inside will be lost!')" th:href="@{/destroyroom(path=${path})}">Destroy this room</a></p>
 			<div style="clear:both;"></div>
 			<p>
 				<a th:href="@{/room(path=${path})}">Go to Room Panel</a> |

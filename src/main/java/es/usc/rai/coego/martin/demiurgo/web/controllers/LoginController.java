@@ -24,7 +24,7 @@ import es.usc.rai.coego.martin.demiurgo.web.forms.LoginForm;
 public class LoginController {
 	@Autowired
 	LoggedUser user;
-
+	
 	@Autowired
 	DemiurgoConnector dc;
 
@@ -63,6 +63,7 @@ public class LoginController {
 			cookie.setComment("Auth token for DemiurgoWeb");
 			cookie.setMaxAge(60 * 60 * 24 * 7);
 			response.addCookie(cookie);
+			
 			return "redirect:/index";
 
 		} catch (HttpClientErrorException ex) {
